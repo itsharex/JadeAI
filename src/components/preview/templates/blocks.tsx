@@ -70,7 +70,7 @@ export function BlocksTemplate({ resume }: { resume: Resume }) {
               </h2>
             </div>
             <div className="ml-5">
-              <BlocksSectionContent section={section} />
+              <BlocksSectionContent section={section} resume={resume} />
             </div>
           </div>
         ))}
@@ -78,7 +78,7 @@ export function BlocksTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function BlocksSectionContent({ section }: { section: any }) {
+function BlocksSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -98,11 +98,20 @@ function BlocksSectionContent({ section }: { section: any }) {
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-semibold" style={{ color: PRIMARY }}>{item.position}</h3>
               <span className="shrink-0 text-xs" style={{ color: '#9b9a97' }}>
-                {item.startDate} - {item.current ? 'Present' : item.endDate}
+                {item.startDate} - {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.company && <p className="text-sm" style={{ color: ACCENT }}>{item.company}{item.location ? ` , ${item.location}` : ''}</p>}
             {item.description && <p className="mt-1 text-sm" style={{ color: '#787774' }}>{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1.5 flex flex-wrap gap-1">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-sm px-1.5 py-0.5 text-[10px]" style={{ backgroundColor: SUBTLE_BG, color: '#787774' }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => (
@@ -179,7 +188,7 @@ function BlocksSectionContent({ section }: { section: any }) {
               <h3 className="text-sm font-semibold" style={{ color: ACCENT }}>{item.name}</h3>
               {item.startDate && (
                 <span className="text-xs" style={{ color: '#9b9a97' }}>
-                  {item.startDate}{item.endDate ? ` - ${item.endDate}` : ''}
+                  {item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

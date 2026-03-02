@@ -16,16 +16,17 @@ const ACCENT = '#be185d';
 const ROSE_50 = '#fff1f2';
 const ROSE_100 = '#ffe4e6';
 
-function buildRoseSectionContent(section: Section): string {
+function buildRoseSectionContent(section: Section, lang: string = 'en'): string {
   const c = section.content as any;
 
   if (section.type === 'summary') return `<p class="rounded-xl px-4 py-3 text-sm italic leading-relaxed" style="background-color:${ROSE_50};color:#57534e">${esc((c as SummaryContent).text)}</p>`;
 
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="rounded-xl border p-4" style="border-color:${ROSE_100}">
-      <div class="flex items-baseline justify-between"><h3 class="text-sm font-semibold" style="color:${PRIMARY}">${esc(it.position)}</h3><span class="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium" style="background-color:${ROSE_50};color:${ACCENT}">${esc(it.startDate)} &ndash; ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><h3 class="text-sm font-semibold" style="color:${PRIMARY}">${esc(it.position)}</h3><span class="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium" style="background-color:${ROSE_50};color:${ACCENT}">${esc(it.startDate)} &ndash; ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.company ? `<p class="text-sm" style="color:${ACCENT}">${esc(it.company)}</p>` : ''}
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-1.5 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style="background-color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm text-zinc-600"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style="background-color:${ACCENT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -50,7 +51,7 @@ function buildRoseSectionContent(section: Section): string {
 
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div class="rounded-xl border p-4" style="border-color:${ROSE_100}">
-      <div class="flex items-baseline justify-between"><h3 class="text-sm font-semibold" style="color:${PRIMARY}">${esc(it.name)}</h3>${it.startDate ? `<span class="shrink-0 text-xs" style="color:${ACCENT}">${esc(it.startDate)}${it.endDate ? ` \u2013 ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><h3 class="text-sm font-semibold" style="color:${PRIMARY}">${esc(it.name)}</h3>${it.startDate ? `<span class="shrink-0 text-xs" style="color:${ACCENT}">${esc(it.startDate)} \u2013 ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-0.5 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-1.5 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style="background-color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm text-zinc-600"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style="background-color:${ACCENT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
@@ -116,7 +117,7 @@ export function buildRoseHtml(resume: ResumeWithSections): string {
         <div class="h-0.5 w-6 rounded-full" style="background-color:${ACCENT}"></div>
         <h2 class="text-xs font-semibold uppercase tracking-[0.15em]" style="color:${PRIMARY}">${esc(s.title)}</h2>
       </div>
-      ${buildRoseSectionContent(s)}
+      ${buildRoseSectionContent(s, resume.language || 'en')}
     </div>`).join('')}
   </div>`;
 }

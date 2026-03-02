@@ -11,16 +11,17 @@ import type {
 } from '@/types/resume';
 import { esc, getPersonalInfo, visibleSections, buildHighlights, type ResumeWithSections, type Section } from '../utils';
 
-function buildStartupSectionContent(section: Section): string {
+function buildStartupSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
   const PURPLE = '#6366f1';
   const CYAN = '#06b6d4';
   if (section.type === 'summary') return `<p class="text-sm leading-relaxed text-zinc-600">${esc((c as SummaryContent).text)}</p>`;
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="pl-4" style="border-left-width:3px;border-left-style:solid;border-color:${CYAN}">
-      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold text-zinc-800">${esc(it.position)}</h3><span class="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white" style="background:${PURPLE}">${esc(it.startDate)} – ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold text-zinc-800">${esc(it.position)}</h3><span class="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white" style="background:${PURPLE}">${esc(it.startDate)} – ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.company ? `<p class="text-sm" style="color:${CYAN}">${esc(it.company)}</p>` : ''}
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-1.5 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-full border px-2 py-0.5 text-[10px] font-medium" style="border-color:${PURPLE};color:${PURPLE}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -38,7 +39,7 @@ function buildStartupSectionContent(section: Section): string {
   }
   if (section.type === 'projects') {
     return `<div class="space-y-4">${((c as ProjectsContent).items || []).map((it: any) => `<div class="pl-4" style="border-left-width:3px;border-left-style:solid;border-color:${CYAN}">
-      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold text-zinc-800">${esc(it.name)}</h3>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)}${it.endDate ? ` – ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold text-zinc-800">${esc(it.name)}</h3>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-1.5 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-full border px-2 py-0.5 text-[10px] font-medium" style="border-color:${PURPLE};color:${PURPLE}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
@@ -95,7 +96,7 @@ export function buildStartupHtml(resume: ResumeWithSections): string {
     <div class="p-8">
       ${sections.map(s => `<div class="mb-6" data-section>
         <h2 class="mb-3 text-sm font-extrabold uppercase tracking-wider" style="color:${PURPLE}">${esc(s.title)}</h2>
-        ${buildStartupSectionContent(s)}
+        ${buildStartupSectionContent(s, resume.language || 'en')}
       </div>`).join('')}
     </div>
   </div>`;

@@ -15,7 +15,7 @@ const SLATE_500 = '#64748b';
 const SLATE_400 = '#94a3b8';
 const SLATE_50 = '#f8fafc';
 
-function buildNordicSectionContent(section: Section): string {
+function buildNordicSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
 
   if (section.type === 'summary') {
@@ -24,8 +24,9 @@ function buildNordicSectionContent(section: Section): string {
 
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="rounded-sm p-3" style="background-color:${SLATE_50}">
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-medium" style="color:${SLATE_500}">${esc(it.position)}</span>${it.company ? `<span class="text-sm font-light" style="color:${SLATE_400}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs font-light" style="color:${SLATE_400}">${esc(it.startDate)} - ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-medium" style="color:${SLATE_500}">${esc(it.position)}</span>${it.company ? `<span class="text-sm font-light" style="color:${SLATE_400}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs font-light" style="color:${SLATE_400}">${esc(it.startDate)} - ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-1 text-sm font-light" style="color:${SLATE_500}">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<p class="mt-0.5 text-xs font-light" style="color:${SLATE_400}">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 list-disc pl-4">${it.highlights.map((h: string) => `<li class="text-sm font-light" style="color:${SLATE_500}">${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -46,9 +47,9 @@ function buildNordicSectionContent(section: Section): string {
 
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div class="rounded-sm p-3" style="background-color:${SLATE_50}">
-      <div class="flex items-baseline justify-between"><span class="text-sm font-medium" style="color:${SLATE_500}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs font-light" style="color:${SLATE_400}">${esc(it.startDate)}${it.endDate ? ` - ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><span class="text-sm font-medium" style="color:${SLATE_500}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs font-light" style="color:${SLATE_400}">${esc(it.startDate)} - ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm font-light" style="color:${SLATE_500}">${esc(it.description)}</p>` : ''}
-      ${it.technologies?.length ? `<p class="mt-0.5 text-xs font-light" style="color:${SLATE_400}">Tech: ${esc(it.technologies.join(', '))}</p>` : ''}
+      ${it.technologies?.length ? `<p class="mt-0.5 text-xs font-light" style="color:${SLATE_400}">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 list-disc pl-4">${it.highlights.map((h: string) => `<li class="text-sm font-light" style="color:${SLATE_500}">${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -103,7 +104,7 @@ export function buildNordicHtml(resume: ResumeWithSections): string {
     <div class="mx-auto mb-8 h-px w-full" style="background-color:${SLATE_400}"></div>
     ${sections.map(s => `<div class="mb-7" data-section>
       <h2 class="mb-3 text-xs font-medium uppercase tracking-[0.2em]" style="color:${SLATE_500}">${esc(s.title)}</h2>
-      ${buildNordicSectionContent(s)}
+      ${buildNordicSectionContent(s, resume.language || 'en')}
     </div>`).join('')}
   </div>`;
 }

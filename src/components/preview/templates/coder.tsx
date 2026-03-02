@@ -126,7 +126,7 @@ export function CoderTemplate({ resume }: { resume: Resume }) {
               <span className="uppercase tracking-wider">{section.title}</span>
             </h2>
             <div className="border-l-2 pl-4" style={{ borderColor: BORDER }}>
-              <CoderMainContent section={section} />
+              <CoderMainContent section={section} resume={resume} />
             </div>
           </div>
         ))}
@@ -207,7 +207,7 @@ function CoderSidebarContent({ section }: { section: any }) {
   return null;
 }
 
-function CoderMainContent({ section }: { section: any }) {
+function CoderMainContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -227,10 +227,19 @@ function CoderMainContent({ section }: { section: any }) {
                 {item.location && <span className="text-xs text-zinc-400">, {item.location}</span>}
               </div>
               <span className="shrink-0 rounded px-2 py-0.5 text-[10px] font-medium" style={{ backgroundColor: '#f6f8fa', color: '#57606a' }}>
-                {item.startDate} - {item.current ? 'Present' : item.endDate}
+                {item.startDate} - {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-sm px-1.5 py-0.5 text-[10px] font-medium" style={{ backgroundColor: '#f6f8fa', color: '#57606a', border: '1px solid #d0d7de' }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 space-y-0.5">
                 {item.highlights.map((h: string, i: number) => (
@@ -286,7 +295,7 @@ function CoderMainContent({ section }: { section: any }) {
               <h3 className="text-sm font-bold" style={{ color: BLUE }}>{item.name}</h3>
               {item.startDate && (
                 <span className="text-xs text-zinc-400">
-                  {item.startDate}{item.endDate ? ` - ${item.endDate}` : ''}
+                  {item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

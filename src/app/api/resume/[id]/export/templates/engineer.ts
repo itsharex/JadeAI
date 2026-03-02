@@ -19,7 +19,7 @@ const BODY_TEXT = '#334155';
 const RULE_COLOR = '#cbd5e1';
 const LIGHT_BG = '#f1f5f9';
 
-function buildEngineerSectionContent(section: Section): string {
+function buildEngineerSectionContent(section: Section, lang: string = 'en'): string {
   const c = section.content as any;
 
   if (section.type === 'summary') {
@@ -28,8 +28,9 @@ function buildEngineerSectionContent(section: Section): string {
 
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm font-medium" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 px-2 py-0.5 text-[10px] font-medium uppercase" style="font-family:JetBrains Mono,Consolas,monospace;color:${SECONDARY};background-color:${LIGHT_BG}">${esc(it.startDate)} - ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm font-medium" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 px-2 py-0.5 text-[10px] font-medium uppercase" style="font-family:JetBrains Mono,Consolas,monospace;color:${SECONDARY};background-color:${LIGHT_BG}">${esc(it.startDate)} - ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-1 text-sm" style="color:${BODY_TEXT}">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1.5">${it.technologies.map((t: string) => `<span class="border px-2 py-0.5 text-[10px] font-medium" style="font-family:JetBrains Mono,Consolas,monospace;border-color:${ACCENT};color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:${BODY_TEXT}"><span class="mt-1.5 h-1 w-1 shrink-0" style="background-color:${ACCENT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
       <div class="mt-2 h-px" style="background-color:${RULE_COLOR}"></div>
     </div>`).join('')}</div>`;
@@ -51,7 +52,7 @@ function buildEngineerSectionContent(section: Section): string {
 
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs" style="font-family:JetBrains Mono,Consolas,monospace;color:${SECONDARY}">${esc(it.startDate)}${it.endDate ? ` - ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs" style="font-family:JetBrains Mono,Consolas,monospace;color:${SECONDARY}">${esc(it.startDate)} - ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm" style="color:${BODY_TEXT}">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1.5">${it.technologies.map((t: string) => `<span class="border px-2 py-0.5 text-[10px] font-medium" style="font-family:JetBrains Mono,Consolas,monospace;border-color:${ACCENT};color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:${BODY_TEXT}"><span class="mt-1.5 h-1 w-1 shrink-0" style="background-color:${ACCENT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
@@ -90,6 +91,7 @@ function buildEngineerSectionContent(section: Section): string {
 export function buildEngineerHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
+  const lang = resume.language || 'en';
   const contacts = [pi.email, pi.phone, pi.location, pi.website].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Inter,sans-serif">
@@ -117,7 +119,7 @@ export function buildEngineerHtml(resume: ResumeWithSections): string {
     <div class="p-8">
       ${sections.map(s => `<div class="mb-6" data-section>
         <div class="mb-2 flex items-center gap-3"><h2 class="text-sm font-bold uppercase tracking-wider" style="color:${PRIMARY}">${esc(s.title)}</h2><div class="h-px flex-1" style="background-color:${ACCENT}"></div><div class="h-1.5 w-1.5" style="background-color:${ACCENT}"></div></div>
-        ${buildEngineerSectionContent(s)}
+        ${buildEngineerSectionContent(s, lang)}
       </div>`).join('')}
     </div>
   </div>`;

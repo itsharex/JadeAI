@@ -15,7 +15,7 @@ const PRIMARY = '#1e293b';
 const ACCENT = '#8b5cf6';
 const ALT_BG = '#f5f3ff';
 
-function buildZigzagSectionContent(section: Section, isEven: boolean): string {
+function buildZigzagSectionContent(section: Section, isEven: boolean, lang: string = 'en'): string {
   const c = section.content as any;
   const alignReverse = isEven ? '' : 'flex-row-reverse';
 
@@ -24,8 +24,9 @@ function buildZigzagSectionContent(section: Section, isEven: boolean): string {
   }
   if (section.type === 'work_experience') {
     return `<div class="space-y-3 text-left">${((c as WorkExperienceContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between ${alignReverse}"><div><span class="text-sm font-semibold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between ${alignReverse}"><div><span class="text-sm font-semibold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-full px-2 py-0.5 text-[10px] text-white" style="background-color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -45,7 +46,7 @@ function buildZigzagSectionContent(section: Section, isEven: boolean): string {
   }
   if (section.type === 'projects') {
     return `<div class="space-y-3 text-left">${((c as ProjectsContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between ${alignReverse}"><span class="text-sm font-semibold" style="color:${ACCENT}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)}${it.endDate ? ` – ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between ${alignReverse}"><span class="text-sm font-semibold" style="color:${ACCENT}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-full px-2 py-0.5 text-[10px] text-white" style="background-color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
@@ -84,6 +85,7 @@ function buildZigzagSectionContent(section: Section, isEven: boolean): string {
 export function buildZigzagHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
+  const lang = resume.language || 'en';
   const contacts = [pi.email, pi.phone, pi.location, pi.website, pi.linkedin, pi.github].filter(Boolean);
 
   const zigzagDots = Array.from({ length: 20 }, (_, i) =>
@@ -105,7 +107,7 @@ export function buildZigzagHtml(resume: ResumeWithSections): string {
       return `<div class="mb-5" data-section>
         <div class="rounded-lg p-4" style="background-color:${isEven ? 'transparent' : ALT_BG}">
           <div class="mb-2 flex items-center gap-2 ${isEven ? '' : 'flex-row-reverse'}"><div class="h-5 w-1 rounded-full" style="background-color:${ACCENT}"></div><h2 class="text-sm font-bold uppercase tracking-wider ${isEven ? '' : 'text-right'}" style="color:${PRIMARY}">${esc(s.title)}</h2></div>
-          <div class="${isEven ? '' : 'text-right'}">${buildZigzagSectionContent(s, isEven)}</div>
+          <div class="${isEven ? '' : 'text-right'}">${buildZigzagSectionContent(s, isEven, lang)}</div>
         </div>
         ${idx < sections.length - 1 ? `<div class="my-2 flex items-center justify-center">${zigzagSvg}</div>` : ''}
       </div>`;

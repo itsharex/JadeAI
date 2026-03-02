@@ -24,6 +24,7 @@ export interface WorkExperienceItem {
   endDate: string | null;
   current: boolean;
   description: string;
+  technologies: string[];
   highlights: string[];
 }
 

@@ -11,13 +11,14 @@ import type {
 } from '@/types/resume';
 import { esc, getPersonalInfo, visibleSections, buildHighlights, type ResumeWithSections, type Section } from '../utils';
 
-function buildAtsSectionContent(section: Section): string {
+function buildAtsSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
   if (section.type === 'summary') return `<p class="text-sm leading-relaxed text-zinc-700">${esc((c as SummaryContent).text)}</p>`;
   if (section.type === 'work_experience') {
     return `<div class="space-y-3">${((c as WorkExperienceContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold text-black">${esc(it.position)}</span>${it.company ? `<span class="text-sm text-zinc-700">, ${esc(it.company)}</span>` : ''}${it.location ? `<span class="text-sm text-zinc-500">, ${esc(it.location)}</span>` : ''}</div><span class="shrink-0 text-sm text-zinc-600">${esc(it.startDate)} - ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold text-black">${esc(it.position)}</span>${it.company ? `<span class="text-sm text-zinc-700">, ${esc(it.company)}</span>` : ''}${it.location ? `<span class="text-sm text-zinc-500">, ${esc(it.location)}</span>` : ''}</div><span class="shrink-0 text-sm text-zinc-600">${esc(it.startDate)} - ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-0.5 text-sm text-zinc-700">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<p class="text-sm text-zinc-600">${lang === 'zh' ? '技术栈' : 'Technologies'}: ${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-5">${buildHighlights(it.highlights, 'text-sm text-zinc-700')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -35,9 +36,9 @@ function buildAtsSectionContent(section: Section): string {
   }
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><span class="text-sm font-bold text-black">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-sm text-zinc-600">${esc(it.startDate)}${it.endDate ? ` - ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><span class="text-sm font-bold text-black">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-sm text-zinc-600">${esc(it.startDate)} - ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-0.5 text-sm text-zinc-700">${esc(it.description)}</p>` : ''}
-      ${it.technologies?.length ? `<p class="text-sm text-zinc-600">Technologies: ${esc(it.technologies.join(', '))}</p>` : ''}
+      ${it.technologies?.length ? `<p class="text-sm text-zinc-600">${lang === 'zh' ? '技术栈' : 'Technologies'}: ${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-5">${buildHighlights(it.highlights, 'text-sm text-zinc-700')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -73,6 +74,7 @@ function buildAtsSectionContent(section: Section): string {
 export function buildAtsHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
+  const lang = resume.language || 'en';
   const contacts = [pi.email, pi.phone, pi.location, pi.website, pi.linkedin, pi.github].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Arial,Helvetica,sans-serif">
@@ -84,7 +86,7 @@ export function buildAtsHtml(resume: ResumeWithSections): string {
     <hr class="mb-4 border-black"/>
     ${sections.map(s => `<div class="mb-4" data-section>
       <h2 class="mb-1.5 border-b border-black pb-0.5 text-base font-bold uppercase text-black">${esc(s.title)}</h2>
-      ${buildAtsSectionContent(s)}
+      ${buildAtsSectionContent(s, lang)}
     </div>`).join('')}
   </div>`;
 }

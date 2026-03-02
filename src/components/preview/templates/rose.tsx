@@ -60,14 +60,14 @@ export function RoseTemplate({ resume }: { resume: Resume }) {
               <div className="h-0.5 w-6 rounded-full" style={{ backgroundColor: ACCENT }} />
               <h2 className="text-xs font-semibold uppercase tracking-[0.15em]" style={{ color: PRIMARY }}>{section.title}</h2>
             </div>
-            <RoseSectionContent section={section} />
+            <RoseSectionContent section={section} resume={resume} />
           </div>
         ))}
     </div>
   );
 }
 
-function RoseSectionContent({ section }: { section: any }) {
+function RoseSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -86,11 +86,18 @@ function RoseSectionContent({ section }: { section: any }) {
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-semibold" style={{ color: PRIMARY }}>{item.position}</h3>
               <span className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium" style={{ backgroundColor: ROSE_50, color: ACCENT }}>
-                {item.startDate} &ndash; {item.current ? 'Present' : item.endDate}
+                {item.startDate} &ndash; {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.company && <p className="text-sm" style={{ color: ACCENT }}>{item.company}</p>}
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1.5 flex flex-wrap gap-1">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style={{ backgroundColor: ACCENT }}>{t}</span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1.5 space-y-0.5">
                 {item.highlights.map((h: string, i: number) => (
@@ -165,7 +172,7 @@ function RoseSectionContent({ section }: { section: any }) {
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-semibold" style={{ color: PRIMARY }}>{item.name}</h3>
               {item.startDate && (
-                <span className="shrink-0 text-xs" style={{ color: ACCENT }}>{item.startDate}{item.endDate ? ` \u2013 ${item.endDate}` : ''}</span>
+                <span className="shrink-0 text-xs" style={{ color: ACCENT }}>{item.startDate} {'\u2013'} {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>
               )}
             </div>
             {item.description && <p className="mt-0.5 text-sm text-zinc-600">{item.description}</p>}

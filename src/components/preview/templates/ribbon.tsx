@@ -67,7 +67,7 @@ export function RibbonTemplate({ resume }: { resume: Resume }) {
                 <div className="h-0 w-0" style={{ borderTop: '13px solid transparent', borderBottom: '13px solid transparent', borderLeft: `8px solid ${RIBBON}` }} />
                 <div className="ml-2 h-px flex-1" style={{ backgroundColor: '#e5e7eb' }} />
               </div>
-              <RibbonSectionContent section={section} />
+              <RibbonSectionContent section={section} resume={resume} />
             </div>
           ))}
       </div>
@@ -75,7 +75,7 @@ export function RibbonTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function RibbonSectionContent({ section }: { section: any }) {
+function RibbonSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -93,9 +93,18 @@ function RibbonSectionContent({ section }: { section: any }) {
                 <span className="text-sm font-semibold" style={{ color: PRIMARY }}>{item.position}</span>
                 {item.company && <span className="text-sm" style={{ color: ACCENT }}> | {item.company}</span>}
               </div>
-              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? 'Present' : item.endDate}</span>
+              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-sm bg-red-50 px-1.5 py-0.5 text-[10px]" style={{ color: ACCENT }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => (
@@ -164,7 +173,7 @@ function RibbonSectionContent({ section }: { section: any }) {
               <span className="text-sm font-semibold" style={{ color: ACCENT }}>{item.name}</span>
               {item.startDate && (
                 <span className="shrink-0 text-xs text-zinc-400">
-                  {item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}
+                  {item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

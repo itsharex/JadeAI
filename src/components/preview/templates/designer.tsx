@@ -39,7 +39,7 @@ export function DesignerTemplate({ resume }: { resume: Resume }) {
               <h2 className="mb-3 text-xs font-black uppercase tracking-[0.3em]" style={{ color: CORAL }}>
                 {section.title}
               </h2>
-              <DesignerSectionContent section={section} />
+              <DesignerSectionContent section={section} resume={resume} />
             </div>
           ))}
       </div>
@@ -47,7 +47,7 @@ export function DesignerTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function DesignerSectionContent({ section }: { section: any }) {
+function DesignerSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -61,10 +61,17 @@ function DesignerSectionContent({ section }: { section: any }) {
           <div key={item.id} className="rounded-lg bg-zinc-50 p-4">
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-bold text-black">{item.position}</h3>
-              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? 'Present' : item.endDate}</span>
+              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.company && <p className="text-sm font-medium" style={{ color: CORAL }}>{item.company}</p>}
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1.5 flex flex-wrap gap-1.5">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-full px-2.5 py-0.5 text-[10px] font-medium text-white" style={{ background: CORAL }}>{t}</span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}
@@ -122,7 +129,7 @@ function DesignerSectionContent({ section }: { section: any }) {
           <div key={item.id} className="rounded-lg bg-zinc-50 p-4">
             <div className="flex items-baseline justify-between">
               <span className="text-sm font-bold text-black">{item.name}</span>
-              {item.startDate && <span className="shrink-0 text-xs text-zinc-400">{item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}</span>}
+              {item.startDate && <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>}
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
             {item.technologies?.length > 0 && (

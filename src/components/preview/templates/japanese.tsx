@@ -54,14 +54,14 @@ export function JapaneseTemplate({ resume }: { resume: Resume }) {
               <span className="inline-block h-1 w-1 rounded-full" style={{ backgroundColor: ACCENT }} />
               <h2 className="text-[10px] font-light uppercase tracking-[0.25em]" style={{ color: ACCENT }}>{section.title}</h2>
             </div>
-            <JapaneseSectionContent section={section} />
+            <JapaneseSectionContent section={section} lang={resume.language} />
           </div>
         ))}
     </div>
   );
 }
 
-function JapaneseSectionContent({ section }: { section: any }) {
+function JapaneseSectionContent({ section, lang }: { section: any; lang?: string }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -75,10 +75,13 @@ function JapaneseSectionContent({ section }: { section: any }) {
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-normal" style={{ color: PRIMARY }}>{item.position}</h3>
-              <span className="shrink-0 text-[10px] font-light" style={{ color: ACCENT }}>{item.startDate} &ndash; {item.current ? 'Present' : item.endDate}</span>
+              <span className="shrink-0 text-[10px] font-light" style={{ color: ACCENT }}>{item.startDate} &ndash; {item.current ? (lang === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.company && <p className="mt-0.5 text-xs font-light" style={{ color: ACCENT }}>{item.company}{item.location ? `, ${item.location}` : ''}</p>}
             {item.description && <p className="mt-2 text-sm font-light leading-relaxed" style={{ color: '#57534e' }}>{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <p className="mt-1 text-xs font-light" style={{ color: ACCENT }}>{item.technologies.join(' \u00b7 ')}</p>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-2 space-y-1">
                 {item.highlights.map((h: string, i: number) => (
@@ -144,7 +147,7 @@ function JapaneseSectionContent({ section }: { section: any }) {
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-normal" style={{ color: PRIMARY }}>{item.name}</h3>
               {item.startDate && (
-                <span className="shrink-0 text-[10px] font-light" style={{ color: ACCENT }}>{item.startDate}{item.endDate ? ` \u2013 ${item.endDate}` : ''}</span>
+                <span className="shrink-0 text-[10px] font-light" style={{ color: ACCENT }}>{item.startDate} {'\u2013'} {item.endDate || (lang === 'zh' ? '至今' : 'Present')}</span>
               )}
             </div>
             {item.description && <p className="mt-1 text-sm font-light leading-relaxed" style={{ color: '#57534e' }}>{item.description}</p>}

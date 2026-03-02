@@ -63,7 +63,7 @@ export function ModernTemplate({ resume }: { resume: Resume }) {
                 <span className="h-[3px] w-7 rounded-full" style={{ background: 'linear-gradient(90deg, #e94560, #0f3460)' }} />
                 {section.title}
               </h2>
-              <ModernSectionContent section={section} />
+              <ModernSectionContent section={section} lang={resume.language} />
             </div>
           ))}
       </div>
@@ -71,7 +71,7 @@ export function ModernTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function ModernSectionContent({ section }: { section: any }) {
+function ModernSectionContent({ section, lang }: { section: any; lang?: string }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -86,11 +86,18 @@ function ModernSectionContent({ section }: { section: any }) {
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-semibold text-zinc-800">{item.position}</h3>
               <span className="shrink-0 rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs text-zinc-500">
-                {item.startDate} - {item.current ? 'Present' : item.endDate}
+                {item.startDate} - {item.current ? (lang === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.company && <p className="text-sm" style={{ color: '#e94560' }}>{item.company}</p>}
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1.5">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-xs text-zinc-600">{t}</span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}
@@ -149,7 +156,7 @@ function ModernSectionContent({ section }: { section: any }) {
               <h3 className="text-sm font-semibold text-zinc-800">{item.name}</h3>
               {item.startDate && (
                 <span className="shrink-0 rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs text-zinc-500">
-                  {item.startDate}{item.endDate ? ` - ${item.endDate}` : ''}
+                  {item.startDate} - {item.endDate || (lang === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

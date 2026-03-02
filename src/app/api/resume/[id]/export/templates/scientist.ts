@@ -18,7 +18,7 @@ const GRID_LINE = '#e2e8f0';
 const BODY_TEXT = '#334155';
 const MUTED = '#64748b';
 
-function buildScientistSectionContent(section: Section, sectionIdx: number): string {
+function buildScientistSectionContent(section: Section, sectionIdx: number, lang: string = 'en'): string {
   const c = section.content as any;
 
   if (section.type === 'summary') {
@@ -27,8 +27,9 @@ function buildScientistSectionContent(section: Section, sectionIdx: number): str
 
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any, idx: number) => `<div>
-      <div class="flex items-baseline justify-between"><div><span class="text-xs font-bold" style="color:${ACCENT}">[${idx + 1}]</span><span class="ml-1.5 text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${MUTED}">, ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs" style="color:${MUTED}">${esc(it.startDate)} - ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-xs font-bold" style="color:${ACCENT}">[${idx + 1}]</span><span class="ml-1.5 text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${MUTED}">, ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs" style="color:${MUTED}">${esc(it.startDate)} - ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-1 pl-6 text-sm" style="color:${BODY_TEXT}">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<p class="pl-6 text-xs italic" style="color:${MUTED}">${lang === 'zh' ? '技术栈' : 'Methods/Tools'}: ${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 pl-6 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:${BODY_TEXT}"><span class="mt-1.5 shrink-0 text-xs" style="color:${ACCENT}">-</span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -49,9 +50,9 @@ function buildScientistSectionContent(section: Section, sectionIdx: number): str
 
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any, idx: number) => `<div>
-      <div class="flex items-baseline justify-between"><div><span class="text-xs font-bold" style="color:${ACCENT}">[${idx + 1}]</span><span class="ml-1.5 text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</span></div>${it.startDate ? `<span class="shrink-0 text-xs" style="color:${MUTED}">${esc(it.startDate)}${it.endDate ? ` - ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><div><span class="text-xs font-bold" style="color:${ACCENT}">[${idx + 1}]</span><span class="ml-1.5 text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</span></div>${it.startDate ? `<span class="shrink-0 text-xs" style="color:${MUTED}">${esc(it.startDate)} - ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 pl-6 text-sm" style="color:${BODY_TEXT}">${esc(it.description)}</p>` : ''}
-      ${it.technologies?.length ? `<p class="pl-6 text-xs italic" style="color:${MUTED}">Methods/Tools: ${esc(it.technologies.join(', '))}</p>` : ''}
+      ${it.technologies?.length ? `<p class="pl-6 text-xs italic" style="color:${MUTED}">${lang === 'zh' ? '技术栈' : 'Methods/Tools'}: ${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 pl-6 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:${BODY_TEXT}"><span class="mt-1.5 shrink-0 text-xs" style="color:${ACCENT}">-</span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -99,7 +100,7 @@ export function buildScientistHtml(resume: ResumeWithSections): string {
     ${sections.map((s, idx) => `<div class="mb-6" data-section>
       <div class="mb-2 flex items-baseline gap-2"><span class="text-sm font-bold" style="color:${ACCENT}">${idx + 1}.</span><h2 class="text-sm font-bold uppercase tracking-wider" style="color:${PRIMARY}">${esc(s.title)}</h2></div>
       <div class="h-px w-full" style="background-color:${GRID_LINE}"></div>
-      <div class="mt-2">${buildScientistSectionContent(s, idx)}</div>
+      <div class="mt-2">${buildScientistSectionContent(s, idx, resume.language || 'en')}</div>
     </div>`).join('')}
     <div class="mt-8 h-px w-full" style="background-color:${PRIMARY}"></div>
   </div>`;

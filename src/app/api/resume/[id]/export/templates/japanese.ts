@@ -14,7 +14,7 @@ import { esc, getPersonalInfo, visibleSections, type ResumeWithSections, type Se
 const PRIMARY = '#1c1917';
 const ACCENT = '#a8a29e';
 
-function buildJapaneseSectionContent(section: Section): string {
+function buildJapaneseSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
 
   if (section.type === 'summary') return `<p class="text-sm font-light leading-loose" style="color:#57534e">${esc((c as SummaryContent).text)}</p>`;
@@ -23,10 +23,11 @@ function buildJapaneseSectionContent(section: Section): string {
     return `<div class="space-y-6">${((c as WorkExperienceContent).items || []).map((it: any) => `<div>
       <div class="flex items-baseline justify-between">
         <h3 class="text-sm font-normal" style="color:${PRIMARY}">${esc(it.position)}</h3>
-        <span class="shrink-0 text-[10px] font-light" style="color:${ACCENT}">${esc(it.startDate)} &ndash; ${it.current ? 'Present' : esc(it.endDate)}</span>
+        <span class="shrink-0 text-[10px] font-light" style="color:${ACCENT}">${esc(it.startDate)} &ndash; ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span>
       </div>
       ${it.company ? `<p class="mt-0.5 text-xs font-light" style="color:${ACCENT}">${esc(it.company)}${it.location ? `, ${esc(it.location)}` : ''}</p>` : ''}
       ${it.description ? `<p class="mt-2 text-sm font-light leading-relaxed" style="color:#57534e">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<p class="mt-1 text-xs font-light" style="color:${ACCENT}">${esc(it.technologies.join(' \u00b7 '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-2 space-y-1">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-3 text-sm font-light" style="color:#57534e"><span class="mt-2 inline-block h-px w-3 shrink-0" style="background-color:${ACCENT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
       <div class="mt-4 h-px" style="background-color:${ACCENT};opacity:0.2"></div>
     </div>`).join('')}</div>`;
@@ -54,7 +55,7 @@ function buildJapaneseSectionContent(section: Section): string {
     return `<div class="space-y-5">${((c as ProjectsContent).items || []).map((it: any) => `<div>
       <div class="flex items-baseline justify-between">
         <h3 class="text-sm font-normal" style="color:${PRIMARY}">${esc(it.name)}</h3>
-        ${it.startDate ? `<span class="shrink-0 text-[10px] font-light" style="color:${ACCENT}">${esc(it.startDate)}${it.endDate ? ` \u2013 ${esc(it.endDate)}` : ''}</span>` : ''}
+        ${it.startDate ? `<span class="shrink-0 text-[10px] font-light" style="color:${ACCENT}">${esc(it.startDate)} \u2013 ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}
       </div>
       ${it.description ? `<p class="mt-1 text-sm font-light leading-relaxed" style="color:#57534e">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<p class="mt-1 text-xs font-light" style="color:${ACCENT}">${esc(it.technologies.join(' \u00b7 '))}</p>` : ''}
@@ -120,7 +121,7 @@ export function buildJapaneseHtml(resume: ResumeWithSections): string {
         <span class="inline-block h-1 w-1 rounded-full" style="background-color:${ACCENT}"></span>
         <h2 class="text-[10px] font-light uppercase tracking-[0.25em]" style="color:${ACCENT}">${esc(s.title)}</h2>
       </div>
-      ${buildJapaneseSectionContent(s)}
+      ${buildJapaneseSectionContent(s, resume.language || 'en')}
     </div>`).join('')}
   </div>`;
 }

@@ -61,7 +61,7 @@ export function EngineerTemplate({ resume }: { resume: Resume }) {
                 <div className="h-px flex-1" style={{ backgroundColor: ACCENT }} />
                 <div className="h-1.5 w-1.5" style={{ backgroundColor: ACCENT }} />
               </div>
-              <EngineerSectionContent section={section} />
+              <EngineerSectionContent section={section} resume={resume} />
             </div>
           ))}
       </div>
@@ -69,7 +69,7 @@ export function EngineerTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function EngineerSectionContent({ section }: { section: any }) {
+function EngineerSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -94,10 +94,23 @@ function EngineerSectionContent({ section }: { section: any }) {
                 className="shrink-0 px-2 py-0.5 text-[10px] font-medium uppercase"
                 style={{ fontFamily: 'JetBrains Mono, Consolas, monospace', color: SECONDARY, backgroundColor: LIGHT_BG }}
               >
-                {item.startDate} - {item.current ? 'Present' : item.endDate}
+                {item.startDate} - {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.description && <p className="mt-1 text-sm" style={{ color: BODY_TEXT }}>{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1.5">
+                {item.technologies.map((t: string, i: number) => (
+                  <span
+                    key={i}
+                    className="border px-2 py-0.5 text-[10px] font-medium"
+                    style={{ fontFamily: 'JetBrains Mono, Consolas, monospace', borderColor: ACCENT, color: ACCENT }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1.5 space-y-0.5">
                 {item.highlights.map((h: string, i: number) => (
@@ -191,7 +204,7 @@ function EngineerSectionContent({ section }: { section: any }) {
                   className="shrink-0 text-xs"
                   style={{ fontFamily: 'JetBrains Mono, Consolas, monospace', color: SECONDARY }}
                 >
-                  {item.startDate}{item.endDate ? ` - ${item.endDate}` : ''}
+                  {item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

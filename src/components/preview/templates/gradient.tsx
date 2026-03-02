@@ -82,7 +82,7 @@ export function GradientTemplate({ resume }: { resume: Resume }) {
                   {section.title}
                 </span>
               </h2>
-              <GradientSectionContent section={section} />
+              <GradientSectionContent section={section} resume={resume} />
             </div>
           ))}
       </div>
@@ -90,7 +90,7 @@ export function GradientTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function GradientSectionContent({ section }: { section: any }) {
+function GradientSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -106,11 +106,20 @@ function GradientSectionContent({ section }: { section: any }) {
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-semibold text-zinc-800">{item.position}</h3>
               <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white" style={{ background: GRADIENT }}>
-                {item.startDate} - {item.current ? 'Present' : item.endDate}
+                {item.startDate} - {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.company && <p className="text-sm font-medium" style={{ color: ACCENT }}>{item.company}</p>}
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1.5 flex flex-wrap gap-1">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style={{ background: GRADIENT }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => (
@@ -183,7 +192,7 @@ function GradientSectionContent({ section }: { section: any }) {
               <h3 className="text-sm font-semibold" style={{ color: ACCENT }}>{item.name}</h3>
               {item.startDate && (
                 <span className="text-xs text-zinc-400">
-                  {item.startDate}{item.endDate ? ` - ${item.endDate}` : ''}
+                  {item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

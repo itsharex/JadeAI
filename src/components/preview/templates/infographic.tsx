@@ -42,7 +42,7 @@ export function InfographicTemplate({ resume }: { resume: Resume }) {
                 </span>
                 <span style={{ color: COLORS[idx % COLORS.length] }}>{section.title}</span>
               </h2>
-              <InfographicSectionContent section={section} colorIndex={idx} />
+              <InfographicSectionContent section={section} colorIndex={idx} resume={resume} />
             </div>
           ))}
       </div>
@@ -50,7 +50,7 @@ export function InfographicTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function InfographicSectionContent({ section, colorIndex }: { section: any; colorIndex: number }) {
+function InfographicSectionContent({ section, colorIndex, resume }: { section: any; colorIndex: number; resume: Resume }) {
   const content = section.content;
   const color = COLORS[colorIndex % COLORS.length];
 
@@ -66,11 +66,20 @@ function InfographicSectionContent({ section, colorIndex }: { section: any; colo
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-bold text-zinc-800">{item.position}</h3>
               <span className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style={{ background: color }}>
-                {item.startDate} – {item.current ? 'Present' : item.endDate}
+                {item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.company && <p className="text-sm" style={{ color }}>{item.company}</p>}
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1.5 flex flex-wrap gap-1">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style={{ background: color, opacity: 0.8 }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}
@@ -135,7 +144,7 @@ function InfographicSectionContent({ section, colorIndex }: { section: any; colo
               <h3 className="text-sm font-bold" style={{ color }}>{item.name}</h3>
               {item.startDate && (
                 <span className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style={{ background: color }}>
-                  {item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}
+                  {item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

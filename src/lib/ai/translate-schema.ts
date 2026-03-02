@@ -5,6 +5,7 @@ export const translateInputSchema = z.object({
   resumeId: z.string().describe('The ID of the resume to translate'),
   targetLanguage: z.enum(['zh', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'pt', 'ru', 'ar']).describe('Target language for translation'),
   sectionIds: z.array(z.string()).optional().describe('Optional list of specific section IDs to translate. If omitted, all sections are translated.'),
+  mode: z.enum(['overwrite', 'copy']).default('overwrite').describe('overwrite replaces the current resume; copy duplicates it first'),
 });
 
 export type TranslateInput = z.infer<typeof translateInputSchema>;

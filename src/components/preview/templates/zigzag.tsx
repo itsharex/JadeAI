@@ -68,7 +68,7 @@ export function ZigzagTemplate({ resume }: { resume: Resume }) {
                 </h2>
               </div>
               <div className={isEven ? '' : 'text-right'}>
-                <ZigzagSectionContent section={section} isEven={isEven} />
+                <ZigzagSectionContent section={section} isEven={isEven} resume={resume} />
               </div>
             </div>
             {/* Zigzag connector between sections */}
@@ -86,7 +86,7 @@ export function ZigzagTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function ZigzagSectionContent({ section, isEven }: { section: any; isEven: boolean }) {
+function ZigzagSectionContent({ section, isEven, resume }: { section: any; isEven: boolean; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -104,9 +104,18 @@ function ZigzagSectionContent({ section, isEven }: { section: any; isEven: boole
                 <span className="text-sm font-semibold" style={{ color: PRIMARY }}>{item.position}</span>
                 {item.company && <span className="text-sm" style={{ color: ACCENT }}> | {item.company}</span>}
               </div>
-              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? 'Present' : item.endDate}</span>
+              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-full px-2 py-0.5 text-[10px] text-white" style={{ backgroundColor: ACCENT }}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => (
@@ -175,7 +184,7 @@ function ZigzagSectionContent({ section, isEven }: { section: any; isEven: boole
               <span className="text-sm font-semibold" style={{ color: ACCENT }}>{item.name}</span>
               {item.startDate && (
                 <span className="shrink-0 text-xs text-zinc-400">
-                  {item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}
+                  {item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

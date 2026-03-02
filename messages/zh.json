@@ -343,7 +343,11 @@
     "portuguese": "葡萄牙语 (Português)",
     "russian": "俄语 (Русский)",
     "arabic": "阿拉伯语 (العربية)",
-    "close": "关闭"
+    "close": "关闭",
+    "modeOverwrite": "覆盖当前",
+    "modeOverwriteDesc": "翻译后替换当前简历内容",
+    "modeCopy": "生成新简历",
+    "modeCopyDesc": "保留原简历，翻译到新副本"
   },
   "generateResume": {
     "title": "AI 简历生成",

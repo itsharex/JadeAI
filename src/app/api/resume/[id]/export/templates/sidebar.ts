@@ -46,13 +46,14 @@ function buildSidebarSectionContent(section: Section): string {
   return '';
 }
 
-function buildSidebarMainContent(section: Section): string {
+function buildSidebarMainContent(section: Section, lang: string = 'en'): string {
   const c = section.content as any;
   if (section.type === 'summary') return `<p class="text-sm leading-relaxed text-zinc-600">${esc((c as SummaryContent).text)}</p>`;
   if (section.type === 'work_experience') {
     return `<div class="space-y-3">${((c as WorkExperienceContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-semibold text-zinc-800">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-semibold text-zinc-800">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-sm px-1.5 py-0.5 text-[10px] text-white" style="background-color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -66,7 +67,7 @@ function buildSidebarMainContent(section: Section): string {
   }
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><span class="text-sm font-semibold text-zinc-800">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)}${it.endDate ? ` – ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><span class="text-sm font-semibold text-zinc-800">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-sm px-1.5 py-0.5 text-[10px] text-white" style="background-color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
@@ -110,6 +111,7 @@ function buildSidebarMainContent(section: Section): string {
 export function buildSidebarHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
+  const lang = resume.language || 'en';
   const sidebarSections = sections.filter(s => SIDEBAR_TYPES.has(s.type));
   const mainSections = sections.filter(s => !SIDEBAR_TYPES.has(s.type));
 
@@ -136,7 +138,7 @@ export function buildSidebarHtml(resume: ResumeWithSections): string {
     <div class="flex-1 p-6">
       ${mainSections.map(s => `<div class="mb-5" data-section>
         <h2 class="mb-2 border-b-2 pb-1 text-sm font-bold uppercase tracking-wider" style="color:${SIDEBAR_BG};border-color:${ACCENT}">${esc(s.title)}</h2>
-        ${buildSidebarMainContent(s)}
+        ${buildSidebarMainContent(s, lang)}
       </div>`).join('')}
     </div>
   </div>`;

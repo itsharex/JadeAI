@@ -11,7 +11,7 @@ import type {
 } from '@/types/resume';
 import { esc, getPersonalInfo, visibleSections, buildHighlights, type ResumeWithSections, type Section } from '../utils';
 
-function buildDeveloperSectionContent(section: Section): string {
+function buildDeveloperSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
   const DARK = '#282c34';
   const GREEN = '#98c379';
@@ -20,8 +20,9 @@ function buildDeveloperSectionContent(section: Section): string {
   if (section.type === 'summary') return `<p class="text-sm leading-relaxed text-zinc-600">${esc((c as SummaryContent).text)}</p>`;
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${DARK}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${BLUE}"> @ ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 rounded px-2 py-0.5 text-[10px] font-medium" style="background:#f0f0f0;color:#636d83">${esc(it.startDate)} – ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${DARK}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${BLUE}"> @ ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 rounded px-2 py-0.5 text-[10px] font-medium" style="background:#f0f0f0;color:#636d83">${esc(it.startDate)} – ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<p class="mt-0.5 text-xs" style="color:${BLUE}">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(' | '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm text-zinc-600"><span class="mt-1 shrink-0 text-xs" style="color:${GREEN}">$</span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -39,9 +40,9 @@ function buildDeveloperSectionContent(section: Section): string {
   }
   if (section.type === 'projects') {
     return `<div class="space-y-4">${((c as ProjectsContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${DARK}">${esc(it.name)}</span></div>${it.startDate ? `<span class="shrink-0 rounded px-2 py-0.5 text-[10px] font-medium" style="background:#f0f0f0;color:#636d83">${esc(it.startDate)}${it.endDate ? ` – ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${DARK}">${esc(it.name)}</span></div>${it.startDate ? `<span class="shrink-0 rounded px-2 py-0.5 text-[10px] font-medium" style="background:#f0f0f0;color:#636d83">${esc(it.startDate)} – ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
-      ${it.technologies?.length ? `<p class="mt-0.5 text-xs" style="color:${BLUE}">Tech: ${esc(it.technologies.join(' | '))}</p>` : ''}
+      ${it.technologies?.length ? `<p class="mt-0.5 text-xs" style="color:${BLUE}">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(' | '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm text-zinc-600"><span class="mt-1 shrink-0 text-xs" style="color:${GREEN}">$</span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -104,7 +105,7 @@ export function buildDeveloperHtml(resume: ResumeWithSections): string {
       ${sections.map(s => `<div class="mb-6" data-section>
         <h2 class="mb-2 text-sm font-bold" style="color:${ORANGE}">&gt; ${esc(s.title).toUpperCase()}</h2>
         <div class="border-l-2 pl-4" style="border-color:#3e4451">
-          ${buildDeveloperSectionContent(s)}
+          ${buildDeveloperSectionContent(s, resume.language || 'en')}
         </div>
       </div>`).join('')}
     </div>

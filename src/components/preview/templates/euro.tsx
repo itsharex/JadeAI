@@ -41,7 +41,7 @@ export function EuroTemplate({ resume }: { resume: Resume }) {
                 <h2 className="text-xs font-bold uppercase tracking-wider" style={{ color: BLUE }}>{section.title}</h2>
               </div>
               <div className="flex-1 border-l-2 pl-4" style={{ borderColor: '#dbeafe' }}>
-                <EuroSectionContent section={section} />
+                <EuroSectionContent section={section} resume={resume} />
               </div>
             </div>
           ))}
@@ -50,7 +50,7 @@ export function EuroTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function EuroSectionContent({ section }: { section: any }) {
+function EuroSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -67,9 +67,10 @@ function EuroSectionContent({ section }: { section: any }) {
                 <span className="text-sm font-bold text-zinc-800">{item.position}</span>
                 {item.company && <span className="text-sm text-zinc-500"> — {item.company}</span>}
               </div>
-              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? 'Present' : item.endDate}</span>
+              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && <p className="mt-0.5 text-xs text-zinc-400">{resume.language === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}
@@ -126,10 +127,10 @@ function EuroSectionContent({ section }: { section: any }) {
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <span className="text-sm font-bold text-zinc-800">{item.name}</span>
-              {item.startDate && <span className="shrink-0 text-xs text-zinc-400">{item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}</span>}
+              {item.startDate && <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>}
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
-            {item.technologies?.length > 0 && <p className="mt-0.5 text-xs text-zinc-400">Tech: {item.technologies.join(', ')}</p>}
+            {item.technologies?.length > 0 && <p className="mt-0.5 text-xs text-zinc-400">{resume.language === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}

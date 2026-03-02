@@ -51,14 +51,14 @@ export function AcademicTemplate({ resume }: { resume: Resume }) {
             <h2 className="mb-1.5 text-xs font-bold uppercase tracking-[0.25em] text-zinc-800" style={{ borderBottom: '1px solid #d4d4d8', paddingBottom: '2px' }}>
               {section.title}
             </h2>
-            <AcademicSectionContent section={section} />
+            <AcademicSectionContent section={section} resume={resume} />
           </div>
         ))}
     </div>
   );
 }
 
-function AcademicSectionContent({ section }: { section: any }) {
+function AcademicSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -77,9 +77,12 @@ function AcademicSectionContent({ section }: { section: any }) {
                 {item.company && <span className="text-sm text-zinc-600">, {item.company}</span>}
                 {item.location && <span className="text-sm text-zinc-400">, {item.location}</span>}
               </div>
-              <span className="shrink-0 text-xs text-zinc-500">{item.startDate} – {item.current ? 'Present' : item.endDate}</span>
+              <span className="shrink-0 text-xs text-zinc-500">{item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.description && <p className="mt-0.5 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <p className="text-xs text-zinc-500 italic">{resume.language === 'zh' ? '技术栈' : 'Technologies'}: {item.technologies.join(', ')}</p>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-0.5 list-disc pl-5">
                 {item.highlights.map((h: string, i: number) => (
@@ -148,13 +151,13 @@ function AcademicSectionContent({ section }: { section: any }) {
               </div>
               {item.startDate && (
                 <span className="shrink-0 text-xs text-zinc-500">
-                  {item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}
+                  {item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>
             {item.description && <p className="mt-0.5 text-sm text-zinc-600">{item.description}</p>}
             {item.technologies?.length > 0 && (
-              <p className="text-xs text-zinc-500 italic">Technologies: {item.technologies.join(', ')}</p>
+              <p className="text-xs text-zinc-500 italic">{resume.language === 'zh' ? '技术栈' : 'Technologies'}: {item.technologies.join(', ')}</p>
             )}
             {item.highlights?.length > 0 && (
               <ul className="mt-0.5 list-disc pl-5">

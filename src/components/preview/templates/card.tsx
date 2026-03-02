@@ -62,7 +62,7 @@ export function CardTemplate({ resume }: { resume: Resume }) {
                   {section.title}
                 </h2>
               </div>
-              <CardSectionContent section={section} />
+              <CardSectionContent section={section} resume={resume} />
             </div>
           </div>
         ))}
@@ -70,7 +70,7 @@ export function CardTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function CardSectionContent({ section }: { section: any }) {
+function CardSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -89,9 +89,18 @@ function CardSectionContent({ section }: { section: any }) {
                 {item.company && <span className="text-sm" style={{ color: ACCENT }}> | {item.company}</span>}
                 {item.location && <span className="text-sm text-zinc-400"> , {item.location}</span>}
               </div>
-              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? 'Present' : item.endDate}</span>
+              <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-600">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => (
@@ -160,7 +169,7 @@ function CardSectionContent({ section }: { section: any }) {
               <span className="text-sm font-semibold" style={{ color: ACCENT }}>{item.name}</span>
               {item.startDate && (
                 <span className="shrink-0 text-xs text-zinc-400">
-                  {item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}
+                  {item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

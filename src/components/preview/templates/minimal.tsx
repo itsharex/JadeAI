@@ -35,14 +35,14 @@ export function MinimalTemplate({ resume }: { resume: Resume }) {
             <h2 className="mb-2 text-xs font-medium uppercase tracking-widest text-zinc-400">
               {section.title}
             </h2>
-            <MinimalSectionContent section={section} />
+            <MinimalSectionContent section={section} lang={resume.language} />
           </div>
         ))}
     </div>
   );
 }
 
-function MinimalSectionContent({ section }: { section: any }) {
+function MinimalSectionContent({ section, lang }: { section: any; lang?: string }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -55,8 +55,11 @@ function MinimalSectionContent({ section }: { section: any }) {
         {(content.items || []).map((item: any) => (
           <div key={item.id}>
             <p className="text-sm"><span className="font-medium text-zinc-800">{item.position}</span> {item.company && <span className="text-zinc-500">/ {item.company}</span>}</p>
-            <p className="text-xs text-zinc-400">{item.startDate} - {item.current ? 'Present' : item.endDate}</p>
+            <p className="text-xs text-zinc-400">{item.startDate} - {item.current ? (lang === 'zh' ? '至今' : 'Present') : item.endDate}</p>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <p className="mt-0.5 text-xs text-zinc-400">{item.technologies.join(' / ')}</p>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => (
@@ -110,7 +113,7 @@ function MinimalSectionContent({ section }: { section: any }) {
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <span className="text-sm font-medium text-zinc-800">{item.name}</span>
-              {item.startDate && <span className="text-xs text-zinc-400">{item.startDate}{item.endDate ? ` - ${item.endDate}` : ''}</span>}
+              {item.startDate && <span className="text-xs text-zinc-400">{item.startDate} - {item.endDate || (lang === 'zh' ? '至今' : 'Present')}</span>}
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
             {item.technologies?.length > 0 && (

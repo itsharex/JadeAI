@@ -62,14 +62,14 @@ export function LuxeTemplate({ resume }: { resume: Resume }) {
               <h2 className="shrink-0 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: GOLD }}>{section.title}</h2>
               <div className="h-px flex-1" style={{ backgroundColor: GOLD }} />
             </div>
-            <LuxeSectionContent section={section} />
+            <LuxeSectionContent section={section} lang={resume.language} />
           </div>
         ))}
     </div>
   );
 }
 
-function LuxeSectionContent({ section }: { section: any }) {
+function LuxeSectionContent({ section, lang }: { section: any; lang?: string }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -85,10 +85,13 @@ function LuxeSectionContent({ section }: { section: any }) {
           <div key={item.id} className="border-l-2 pl-4" style={{ borderColor: GOLD }}>
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-bold" style={{ color: TEXT }}>{item.position}</h3>
-              <span className="shrink-0 text-xs italic" style={{ color: '#a8a29e' }}>{item.startDate} &ndash; {item.current ? 'Present' : item.endDate}</span>
+              <span className="shrink-0 text-xs italic" style={{ color: '#a8a29e' }}>{item.startDate} &ndash; {item.current ? (lang === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.company && <p className="text-sm" style={{ color: GOLD }}>{item.company}{item.location ? `, ${item.location}` : ''}</p>}
             {item.description && <p className="mt-1 text-sm" style={{ color: '#44403c' }}>{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <p className="mt-0.5 text-xs italic" style={{ color: '#a8a29e' }}>{lang === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1.5 list-none space-y-0.5">
                 {item.highlights.map((h: string, i: number) => (
@@ -153,12 +156,12 @@ function LuxeSectionContent({ section }: { section: any }) {
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-bold" style={{ color: TEXT }}>{item.name}</h3>
               {item.startDate && (
-                <span className="shrink-0 text-xs italic" style={{ color: '#a8a29e' }}>{item.startDate}{item.endDate ? ` \u2013 ${item.endDate}` : ''}</span>
+                <span className="shrink-0 text-xs italic" style={{ color: '#a8a29e' }}>{item.startDate} {'\u2013'} {item.endDate || (lang === 'zh' ? '至今' : 'Present')}</span>
               )}
             </div>
             {item.description && <p className="mt-0.5 text-sm" style={{ color: '#44403c' }}>{item.description}</p>}
             {item.technologies?.length > 0 && (
-              <p className="mt-0.5 text-xs italic" style={{ color: '#a8a29e' }}>Tech: {item.technologies.join(', ')}</p>
+              <p className="mt-0.5 text-xs italic" style={{ color: '#a8a29e' }}>{lang === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>
             )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-none space-y-0.5">

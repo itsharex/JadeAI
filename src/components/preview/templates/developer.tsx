@@ -49,7 +49,7 @@ export function DeveloperTemplate({ resume }: { resume: Resume }) {
                 {'> '}{section.title.toUpperCase()}
               </h2>
               <div className="border-l-2 pl-4" style={{ borderColor: '#3e4451' }}>
-                <DeveloperSectionContent section={section} />
+                <DeveloperSectionContent section={section} resume={resume} />
               </div>
             </div>
           ))}
@@ -58,7 +58,7 @@ export function DeveloperTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function DeveloperSectionContent({ section }: { section: any }) {
+function DeveloperSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -76,10 +76,13 @@ function DeveloperSectionContent({ section }: { section: any }) {
                 {item.company && <span className="text-sm" style={{ color: BLUE }}> @ {item.company}</span>}
               </div>
               <span className="shrink-0 rounded px-2 py-0.5 text-[10px] font-medium" style={{ background: '#f0f0f0', color: '#636d83' }}>
-                {item.startDate} – {item.current ? 'Present' : item.endDate}
+                {item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <p className="mt-0.5 text-xs" style={{ color: BLUE }}>{resume.language === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(' | ')}</p>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 space-y-0.5">
                 {item.highlights.map((h: string, i: number) => (
@@ -148,13 +151,13 @@ function DeveloperSectionContent({ section }: { section: any }) {
               </div>
               {item.startDate && (
                 <span className="shrink-0 rounded px-2 py-0.5 text-[10px] font-medium" style={{ background: '#f0f0f0', color: '#636d83' }}>
-                  {item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}
+                  {item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
             {item.technologies?.length > 0 && (
-              <p className="mt-0.5 text-xs" style={{ color: BLUE }}>Tech: {item.technologies.join(' | ')}</p>
+              <p className="mt-0.5 text-xs" style={{ color: BLUE }}>{resume.language === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(' | ')}</p>
             )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 space-y-0.5">

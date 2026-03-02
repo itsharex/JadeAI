@@ -343,7 +343,11 @@
     "portuguese": "Portuguese (Português)",
     "russian": "Russian (Русский)",
     "arabic": "Arabic (العربية)",
-    "close": "Close"
+    "close": "Close",
+    "modeOverwrite": "Overwrite",
+    "modeOverwriteDesc": "Replace current resume content",
+    "modeCopy": "New Copy",
+    "modeCopyDesc": "Keep original, translate into a copy"
   },
   "generateResume": {
     "title": "AI Resume Generation",

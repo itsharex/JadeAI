@@ -70,14 +70,14 @@ export function ArchitectTemplate({ resume }: { resume: Resume }) {
               </h2>
               <div className="h-px flex-1" style={{ backgroundColor: PRIMARY, opacity: 0.3 }} />
             </div>
-            <ArchitectSectionContent section={section} />
+            <ArchitectSectionContent section={section} resume={resume} />
           </div>
         ))}
     </div>
   );
 }
 
-function ArchitectSectionContent({ section }: { section: any }) {
+function ArchitectSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -103,10 +103,23 @@ function ArchitectSectionContent({ section }: { section: any }) {
                 className="shrink-0 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider"
                 style={{ fontFamily: 'JetBrains Mono, Consolas, monospace', color: MUTED, backgroundColor: GRID }}
               >
-                {item.startDate} - {item.current ? 'Present' : item.endDate}
+                {item.startDate} - {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.description && <p className="mt-1 text-sm" style={{ color: BODY_TEXT }}>{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1.5">
+                {item.technologies.map((t: string, i: number) => (
+                  <span
+                    key={i}
+                    className="px-1.5 py-0.5 text-[10px] font-medium"
+                    style={{ backgroundColor: GRID, color: ACCENT, fontFamily: 'JetBrains Mono, Consolas, monospace' }}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1.5 space-y-0.5">
                 {item.highlights.map((h: string, i: number) => (
@@ -184,7 +197,7 @@ function ArchitectSectionContent({ section }: { section: any }) {
               <span className="text-sm font-bold" style={{ color: PRIMARY }}>{item.name}</span>
               {item.startDate && (
                 <span className="shrink-0 text-xs" style={{ fontFamily: 'JetBrains Mono, Consolas, monospace', color: MUTED }}>
-                  {item.startDate}{item.endDate ? ` - ${item.endDate}` : ''}
+                  {item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>

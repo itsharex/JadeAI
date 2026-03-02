@@ -14,18 +14,19 @@ import { esc, getPersonalInfo, visibleSections, buildHighlights, type ResumeWith
 const RED = '#dc2626';
 const TEXT = '#18181b';
 
-function buildSwissSectionContent(section: Section): string {
+function buildSwissSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
 
   if (section.type === 'summary') return `<p class="text-sm leading-relaxed" style="color:#3f3f46">${esc((c as SummaryContent).text)}</p>`;
 
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="grid grid-cols-[140px_1fr] gap-4">
-      <div class="text-xs" style="color:#71717a"><span>${esc(it.startDate)} &ndash; ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="text-xs" style="color:#71717a"><span>${esc(it.startDate)} &ndash; ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       <div>
         <h3 class="text-sm font-bold" style="color:${TEXT}">${esc(it.position)}</h3>
         ${it.company ? `<p class="text-sm" style="color:${RED}">${esc(it.company)}</p>` : ''}
         ${it.description ? `<p class="mt-1 text-sm" style="color:#3f3f46">${esc(it.description)}</p>` : ''}
+        ${it.technologies?.length ? `<p class="mt-0.5 text-xs" style="color:#71717a">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(', '))}</p>` : ''}
         ${it.highlights?.length ? `<ul class="mt-1 list-none space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:#3f3f46"><span class="mt-1.5 inline-block h-1 w-1 shrink-0" style="background-color:${RED}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
       </div>
     </div>`).join('')}</div>`;
@@ -51,11 +52,11 @@ function buildSwissSectionContent(section: Section): string {
 
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div class="grid grid-cols-[140px_1fr] gap-4">
-      ${it.startDate ? `<span class="text-xs" style="color:#71717a">${esc(it.startDate)}${it.endDate ? ` \u2013 ${esc(it.endDate)}` : ''}</span>` : '<span></span>'}
+      ${it.startDate ? `<span class="text-xs" style="color:#71717a">${esc(it.startDate)} \u2013 ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : '<span></span>'}
       <div>
         <h3 class="text-sm font-bold" style="color:${TEXT}">${esc(it.name)}</h3>
         ${it.description ? `<p class="mt-0.5 text-sm" style="color:#3f3f46">${esc(it.description)}</p>` : ''}
-        ${it.technologies?.length ? `<p class="mt-0.5 text-xs" style="color:#71717a">Tech: ${esc(it.technologies.join(', '))}</p>` : ''}
+        ${it.technologies?.length ? `<p class="mt-0.5 text-xs" style="color:#71717a">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(', '))}</p>` : ''}
         ${it.highlights?.length ? `<ul class="mt-1 list-none space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:#3f3f46"><span class="mt-1.5 inline-block h-1 w-1 shrink-0" style="background-color:${RED}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
       </div>
     </div>`).join('')}</div>`;
@@ -123,7 +124,7 @@ export function buildSwissHtml(resume: ResumeWithSections): string {
         <span class="inline-block h-2.5 w-2.5 shrink-0" style="background-color:${RED}"></span>
         <h2 class="text-xs font-bold uppercase tracking-[0.2em]" style="color:${TEXT}">${esc(s.title)}</h2>
       </div>
-      ${buildSwissSectionContent(s)}
+      ${buildSwissSectionContent(s, resume.language || 'en')}
     </div>`).join('')}
   </div>`;
 }

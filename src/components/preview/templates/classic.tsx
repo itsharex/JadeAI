@@ -49,14 +49,14 @@ export function ClassicTemplate({ resume }: { resume: Resume }) {
             <h2 className="mb-2 border-b border-zinc-300 pb-1 text-sm font-bold uppercase tracking-wider text-zinc-800">
               {section.title}
             </h2>
-            <SectionContent section={section} />
+            <SectionContent section={section} lang={resume.language} />
           </div>
         ))}
     </div>
   );
 }
 
-function SectionContent({ section }: { section: any }) {
+function SectionContent({ section, lang }: { section: any; lang?: string }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -75,9 +75,12 @@ function SectionContent({ section }: { section: any }) {
                 {item.company && <span className="text-sm text-zinc-600"> at {item.company}</span>}
                 {item.location && <span className="text-sm text-zinc-400"> , {item.location}</span>}
               </div>
-              <span className="text-xs text-zinc-400">{item.startDate} - {item.current ? 'Present' : item.endDate}</span>
+              <span className="text-xs text-zinc-400">{item.startDate} - {item.current ? (lang === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <p className="mt-0.5 text-xs text-zinc-400">{lang === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => (
@@ -143,13 +146,13 @@ function SectionContent({ section }: { section: any }) {
               <span className="font-semibold text-zinc-800 text-sm">{item.name}</span>
               {item.startDate && (
                 <span className="text-xs text-zinc-400">
-                  {item.startDate}{item.endDate ? ` - ${item.endDate}` : ''}
+                  {item.startDate} - {item.endDate || (lang === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
             {item.technologies?.length > 0 && (
-              <p className="mt-0.5 text-xs text-zinc-400">Tech: {item.technologies.join(', ')}</p>
+              <p className="mt-0.5 text-xs text-zinc-400">{lang === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>
             )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">

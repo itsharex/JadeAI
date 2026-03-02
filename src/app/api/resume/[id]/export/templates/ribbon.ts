@@ -15,7 +15,7 @@ const PRIMARY = '#1e293b';
 const ACCENT = '#b91c1c';
 const RIBBON = '#dc2626';
 
-function buildRibbonSectionContent(section: Section): string {
+function buildRibbonSectionContent(section: Section, lang: string = 'en'): string {
   const c = section.content as any;
 
   if (section.type === 'summary') {
@@ -23,8 +23,9 @@ function buildRibbonSectionContent(section: Section): string {
   }
   if (section.type === 'work_experience') {
     return `<div class="space-y-3">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="border-l-2 pl-3" style="border-color:${RIBBON}">
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-semibold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-semibold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}</div><span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-sm bg-red-50 px-1.5 py-0.5 text-[10px]" style="color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -44,7 +45,7 @@ function buildRibbonSectionContent(section: Section): string {
   }
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div class="border-l-2 pl-3" style="border-color:${RIBBON}">
-      <div class="flex items-baseline justify-between"><span class="text-sm font-semibold" style="color:${ACCENT}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)}${it.endDate ? ` – ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><span class="text-sm font-semibold" style="color:${ACCENT}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="rounded-sm bg-red-50 px-1.5 py-0.5 text-[10px]" style="color:${ACCENT}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
@@ -83,6 +84,7 @@ function buildRibbonSectionContent(section: Section): string {
 export function buildRibbonHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
+  const lang = resume.language || 'en';
   const contacts = [pi.email, pi.phone, pi.location, pi.website, pi.linkedin, pi.github].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] overflow-hidden bg-white shadow-lg" style="font-family:Inter,sans-serif">
@@ -105,7 +107,7 @@ export function buildRibbonHtml(resume: ResumeWithSections): string {
           <div class="h-0 w-0" style="border-top:13px solid transparent;border-bottom:13px solid transparent;border-left:8px solid ${RIBBON}"></div>
           <div class="ml-2 h-px flex-1" style="background-color:#e5e7eb"></div>
         </div>
-        ${buildRibbonSectionContent(s)}
+        ${buildRibbonSectionContent(s, lang)}
       </div>`).join('')}
     </div>
   </div>`;

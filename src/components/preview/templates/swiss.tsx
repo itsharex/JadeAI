@@ -55,14 +55,14 @@ export function SwissTemplate({ resume }: { resume: Resume }) {
               <span className="inline-block h-2.5 w-2.5 shrink-0" style={{ backgroundColor: RED }} />
               <h2 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: TEXT }}>{section.title}</h2>
             </div>
-            <SwissSectionContent section={section} />
+            <SwissSectionContent section={section} lang={resume.language} />
           </div>
         ))}
     </div>
   );
 }
 
-function SwissSectionContent({ section }: { section: any }) {
+function SwissSectionContent({ section, lang }: { section: any; lang?: string }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -75,12 +75,15 @@ function SwissSectionContent({ section }: { section: any }) {
         {((content as WorkExperienceContent).items || []).map((item: any) => (
           <div key={item.id} className="grid grid-cols-[140px_1fr] gap-4">
             <div className="text-xs" style={{ color: '#71717a' }}>
-              <span>{item.startDate} &ndash; {item.current ? 'Present' : item.endDate}</span>
+              <span>{item.startDate} &ndash; {item.current ? (lang === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             <div>
               <h3 className="text-sm font-bold" style={{ color: TEXT }}>{item.position}</h3>
               {item.company && <p className="text-sm" style={{ color: RED }}>{item.company}</p>}
               {item.description && <p className="mt-1 text-sm" style={{ color: '#3f3f46' }}>{item.description}</p>}
+              {item.technologies?.length > 0 && (
+                <p className="mt-0.5 text-xs" style={{ color: '#71717a' }}>{lang === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>
+              )}
               {item.highlights?.length > 0 && (
                 <ul className="mt-1 list-none space-y-0.5">
                   {item.highlights.map((h: string, i: number) => (
@@ -144,13 +147,13 @@ function SwissSectionContent({ section }: { section: any }) {
         {((content as ProjectsContent).items || []).map((item: any) => (
           <div key={item.id} className="grid grid-cols-[140px_1fr] gap-4">
             {item.startDate ? (
-              <span className="text-xs" style={{ color: '#71717a' }}>{item.startDate}{item.endDate ? ` \u2013 ${item.endDate}` : ''}</span>
+              <span className="text-xs" style={{ color: '#71717a' }}>{item.startDate} {'\u2013'} {item.endDate || (lang === 'zh' ? '至今' : 'Present')}</span>
             ) : <span />}
             <div>
               <h3 className="text-sm font-bold" style={{ color: TEXT }}>{item.name}</h3>
               {item.description && <p className="mt-0.5 text-sm" style={{ color: '#3f3f46' }}>{item.description}</p>}
               {item.technologies?.length > 0 && (
-                <p className="mt-0.5 text-xs" style={{ color: '#71717a' }}>Tech: {item.technologies.join(', ')}</p>
+                <p className="mt-0.5 text-xs" style={{ color: '#71717a' }}>{lang === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>
               )}
               {item.highlights?.length > 0 && (
                 <ul className="mt-1 list-none space-y-0.5">

@@ -14,16 +14,17 @@ import { esc, getPersonalInfo, visibleSections, buildHighlights, type ResumeWith
 const PRIMARY = '#1e293b';
 const AMBER = '#f59e0b';
 
-function buildMetroSectionContent(section: Section): string {
+function buildMetroSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
 
   if (section.type === 'summary') return `<p class="border-l-3 pl-4 text-sm leading-relaxed text-zinc-600" style="border-color:${AMBER}">${esc((c as SummaryContent).text)}</p>`;
 
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="border-l-3 pl-4" style="border-color:${AMBER}">
-      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</h3><span class="shrink-0 px-2 py-0.5 text-[10px] font-bold uppercase text-white" style="background-color:${PRIMARY}">${esc(it.startDate)} - ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</h3><span class="shrink-0 px-2 py-0.5 text-[10px] font-bold uppercase text-white" style="background-color:${PRIMARY}">${esc(it.startDate)} - ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.company ? `<p class="text-sm font-semibold" style="color:${AMBER}">${esc(it.company)}</p>` : ''}
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="px-1.5 py-0.5 text-[10px] font-bold text-white" style="background-color:${PRIMARY}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -48,7 +49,7 @@ function buildMetroSectionContent(section: Section): string {
 
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div class="border-l-3 pl-4" style="border-color:${AMBER}">
-      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</h3>${it.startDate ? `<span class="text-xs text-zinc-400">${esc(it.startDate)}${it.endDate ? ` - ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</h3>${it.startDate ? `<span class="text-xs text-zinc-400">${esc(it.startDate)} - ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1">${it.technologies.map((t: string) => `<span class="px-1.5 py-0.5 text-[10px] font-bold text-white" style="background-color:${PRIMARY}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
@@ -110,7 +111,7 @@ export function buildMetroHtml(resume: ResumeWithSections): string {
         <div class="px-3 py-1 text-xs font-bold uppercase tracking-wider text-white" style="background-color:${PRIMARY}">${esc(s.title)}</div>
         <div class="h-0.5 flex-1" style="background-color:${AMBER}"></div>
       </div>
-      ${buildMetroSectionContent(s)}
+      ${buildMetroSectionContent(s, resume.language || 'en')}
     </div>`).join('')}
   </div>`;
 }

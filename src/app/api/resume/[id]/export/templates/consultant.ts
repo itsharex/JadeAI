@@ -14,7 +14,7 @@ import { esc, getPersonalInfo, visibleSections, type ResumeWithSections, type Se
 const GRAY_700 = '#374151';
 const BLUE_600 = '#2563eb';
 
-function buildConsultantSectionContent(section: Section): string {
+function buildConsultantSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
 
   if (section.type === 'summary') {
@@ -23,8 +23,9 @@ function buildConsultantSectionContent(section: Section): string {
 
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${GRAY_700}">${esc(it.position)}</span>${it.company ? `<span class="text-sm text-gray-500"> | ${esc(it.company)}</span>` : ''}${it.location ? `<span class="text-sm text-gray-400">, ${esc(it.location)}</span>` : ''}</div><span class="shrink-0 text-xs font-medium" style="color:${BLUE_600}">${esc(it.startDate)} - ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${GRAY_700}">${esc(it.position)}</span>${it.company ? `<span class="text-sm text-gray-500"> | ${esc(it.company)}</span>` : ''}${it.location ? `<span class="text-sm text-gray-400">, ${esc(it.location)}</span>` : ''}</div><span class="shrink-0 text-xs font-medium" style="color:${BLUE_600}">${esc(it.startDate)} - ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-1 text-sm text-gray-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<p class="mt-0.5 text-xs text-gray-400">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.map((h: string) => `<li class="flex items-start gap-2 text-sm text-gray-600"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style="background-color:${BLUE_600}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -45,9 +46,9 @@ function buildConsultantSectionContent(section: Section): string {
 
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><span class="text-sm font-bold" style="color:${GRAY_700}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs font-medium" style="color:${BLUE_600}">${esc(it.startDate)}${it.endDate ? ` - ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><span class="text-sm font-bold" style="color:${GRAY_700}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs font-medium" style="color:${BLUE_600}">${esc(it.startDate)} - ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm text-gray-600">${esc(it.description)}</p>` : ''}
-      ${it.technologies?.length ? `<p class="mt-0.5 text-xs text-gray-400">Tech: ${esc(it.technologies.join(', '))}</p>` : ''}
+      ${it.technologies?.length ? `<p class="mt-0.5 text-xs text-gray-400">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.map((h: string) => `<li class="flex items-start gap-2 text-sm text-gray-600"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style="background-color:${BLUE_600}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -106,7 +107,7 @@ export function buildConsultantHtml(resume: ResumeWithSections): string {
     </div>
     ${sections.map(s => `<div class="mb-6" data-section>
       <h2 class="mb-3 border-l-[3px] pl-3 text-sm font-bold uppercase tracking-wider" style="color:${GRAY_700};border-color:${BLUE_600}">${esc(s.title)}</h2>
-      ${buildConsultantSectionContent(s)}
+      ${buildConsultantSectionContent(s, resume.language || 'en')}
     </div>`).join('')}
   </div>`;
 }

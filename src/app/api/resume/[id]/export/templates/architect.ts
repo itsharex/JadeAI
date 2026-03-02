@@ -18,7 +18,7 @@ const GRID = '#dbeafe';
 const BODY_TEXT = '#374151';
 const MUTED = '#6b7280';
 
-function buildArchitectSectionContent(section: Section): string {
+function buildArchitectSectionContent(section: Section, lang: string = 'en'): string {
   const c = section.content as any;
 
   if (section.type === 'summary') {
@@ -27,8 +27,9 @@ function buildArchitectSectionContent(section: Section): string {
 
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="border-l-2 pl-4" style="border-color:${ACCENT}">
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}${it.location ? `<span class="text-sm" style="color:${MUTED}">, ${esc(it.location)}</span>` : ''}</div><span class="shrink-0 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider" style="font-family:JetBrains Mono,Consolas,monospace;color:${MUTED};background-color:${GRID}">${esc(it.startDate)} - ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</span>${it.company ? `<span class="text-sm" style="color:${ACCENT}"> | ${esc(it.company)}</span>` : ''}${it.location ? `<span class="text-sm" style="color:${MUTED}">, ${esc(it.location)}</span>` : ''}</div><span class="shrink-0 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider" style="font-family:JetBrains Mono,Consolas,monospace;color:${MUTED};background-color:${GRID}">${esc(it.startDate)} - ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.description ? `<p class="mt-1 text-sm" style="color:${BODY_TEXT}">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1.5">${it.technologies.map((t: string) => `<span class="px-1.5 py-0.5 text-[10px] font-medium" style="background-color:${GRID};color:${ACCENT};font-family:JetBrains Mono,Consolas,monospace">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:${BODY_TEXT}"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rotate-45" style="background-color:${ACCENT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -49,7 +50,7 @@ function buildArchitectSectionContent(section: Section): string {
 
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div class="border-l-2 pl-4" style="border-color:${ACCENT}">
-      <div class="flex items-baseline justify-between"><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs" style="font-family:JetBrains Mono,Consolas,monospace;color:${MUTED}">${esc(it.startDate)}${it.endDate ? ` - ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs" style="font-family:JetBrains Mono,Consolas,monospace;color:${MUTED}">${esc(it.startDate)} - ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm" style="color:${BODY_TEXT}">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-1 flex flex-wrap gap-1.5">${it.technologies.map((t: string) => `<span class="px-1.5 py-0.5 text-[10px] font-medium" style="background-color:${GRID};color:${ACCENT};font-family:JetBrains Mono,Consolas,monospace">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:${BODY_TEXT}"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rotate-45" style="background-color:${ACCENT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
@@ -119,7 +120,7 @@ export function buildArchitectHtml(resume: ResumeWithSections): string {
         <h2 class="text-sm font-bold uppercase tracking-[0.15em]" style="font-family:JetBrains Mono,Consolas,monospace;color:${PRIMARY}">${esc(s.title)}</h2>
         <div class="h-px flex-1" style="background-color:${PRIMARY};opacity:0.3"></div>
       </div>
-      ${buildArchitectSectionContent(s)}
+      ${buildArchitectSectionContent(s, resume.language || 'en')}
     </div>`).join('')}
   </div>`;
 }

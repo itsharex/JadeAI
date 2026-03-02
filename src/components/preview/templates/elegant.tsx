@@ -42,14 +42,14 @@ export function ElegantTemplate({ resume }: { resume: Resume }) {
               <h2 className="shrink-0 text-sm font-bold uppercase tracking-[0.2em]" style={{ color: GOLD }}>{section.title}</h2>
               <div className="h-px flex-1" style={{ background: GOLD }} />
             </div>
-            <ElegantSectionContent section={section} />
+            <ElegantSectionContent section={section} lang={resume.language} />
           </div>
         ))}
     </div>
   );
 }
 
-function ElegantSectionContent({ section }: { section: any }) {
+function ElegantSectionContent({ section, lang }: { section: any; lang?: string }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -66,9 +66,10 @@ function ElegantSectionContent({ section }: { section: any }) {
                 <span className="text-sm font-bold" style={{ color: '#2c2c2c' }}>{item.position}</span>
                 {item.company && <span className="text-sm text-zinc-500"> — {item.company}</span>}
               </div>
-              <span className="shrink-0 text-xs italic text-zinc-400">{item.startDate} – {item.current ? 'Present' : item.endDate}</span>
+              <span className="shrink-0 text-xs italic text-zinc-400">{item.startDate} – {item.current ? (lang === 'zh' ? '至今' : 'Present') : item.endDate}</span>
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && <p className="mt-0.5 text-xs text-zinc-400 italic">{lang === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-5">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}
@@ -125,10 +126,10 @@ function ElegantSectionContent({ section }: { section: any }) {
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <span className="text-sm font-bold" style={{ color: '#2c2c2c' }}>{item.name}</span>
-              {item.startDate && <span className="shrink-0 text-xs italic text-zinc-400">{item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}</span>}
+              {item.startDate && <span className="shrink-0 text-xs italic text-zinc-400">{item.startDate} – {item.endDate || (lang === 'zh' ? '至今' : 'Present')}</span>}
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
-            {item.technologies?.length > 0 && <p className="mt-0.5 text-xs text-zinc-400 italic">Tech: {item.technologies.join(', ')}</p>}
+            {item.technologies?.length > 0 && <p className="mt-0.5 text-xs text-zinc-400 italic">{lang === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-5">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}

@@ -15,7 +15,7 @@ const PRIMARY = '#1e1b4b';
 const ACCENT = '#f43f5e';
 const HIGHLIGHT = '#fbbf24';
 
-function buildArtisticSectionContent(section: Section): string {
+function buildArtisticSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
 
   if (section.type === 'summary') {
@@ -25,9 +25,10 @@ function buildArtisticSectionContent(section: Section): string {
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="relative rounded-lg p-4" style="border:1px dashed ${ACCENT}30">
       <div class="absolute -left-1.5 top-4 h-3 w-3 rounded-full" style="background-color:${ACCENT}"></div>
-      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</h3><span class="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold text-white" style="background-color:${ACCENT}">${esc(it.startDate)} - ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</h3><span class="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold text-white" style="background-color:${ACCENT}">${esc(it.startDate)} - ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.company ? `<p class="text-sm font-medium" style="color:${ACCENT}">${esc(it.company)}${it.location ? `, ${esc(it.location)}` : ''}</p>` : ''}
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-2 flex flex-wrap gap-1">${it.technologies.map((t: string, i: number) => `<span class="rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style="background-color:${i % 2 === 0 ? ACCENT : PRIMARY}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm text-zinc-600"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style="background-color:${HIGHLIGHT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -52,7 +53,7 @@ function buildArtisticSectionContent(section: Section): string {
 
   if (section.type === 'projects') {
     return `<div class="space-y-3">${((c as ProjectsContent).items || []).map((it: any) => `<div class="rounded-lg p-4" style="border:1px dashed ${ACCENT}30">
-      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</h3>${it.startDate ? `<span class="text-xs text-zinc-400">${esc(it.startDate)}${it.endDate ? ` - ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</h3>${it.startDate ? `<span class="text-xs text-zinc-400">${esc(it.startDate)} - ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-0.5 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-2 flex flex-wrap gap-1">${it.technologies.map((t: string, i: number) => `<span class="rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style="background-color:${i % 2 === 0 ? ACCENT : PRIMARY}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm text-zinc-600"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style="background-color:${HIGHLIGHT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
@@ -116,7 +117,7 @@ export function buildArtisticHtml(resume: ResumeWithSections): string {
     <div class="p-8 pt-6">
       ${sections.map(s => `<div class="mb-6" data-section>
         <div class="mb-2 flex items-center gap-2"><h2 class="text-sm font-extrabold uppercase tracking-widest" style="color:${PRIMARY}">${esc(s.title)}</h2><div class="h-0.5 flex-1" style="border-top:2px dashed ${ACCENT}40"></div></div>
-        ${buildArtisticSectionContent(s)}
+        ${buildArtisticSectionContent(s, resume.language || 'en')}
       </div>`).join('')}
     </div>
   </div>`;

@@ -41,7 +41,7 @@ export function StartupTemplate({ resume }: { resume: Resume }) {
               <h2 className="mb-3 text-sm font-extrabold uppercase tracking-wider" style={{ color: PURPLE }}>
                 {section.title}
               </h2>
-              <StartupSectionContent section={section} />
+              <StartupSectionContent section={section} resume={resume} />
             </div>
           ))}
       </div>
@@ -49,7 +49,7 @@ export function StartupTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function StartupSectionContent({ section }: { section: any }) {
+function StartupSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -64,11 +64,18 @@ function StartupSectionContent({ section }: { section: any }) {
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-bold text-zinc-800">{item.position}</h3>
               <span className="shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-semibold text-white" style={{ background: PURPLE }}>
-                {item.startDate} – {item.current ? 'Present' : item.endDate}
+                {item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.company && <p className="text-sm" style={{ color: CYAN }}>{item.company}</p>}
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && (
+              <div className="mt-1.5 flex flex-wrap gap-1">
+                {item.technologies.map((t: string, i: number) => (
+                  <span key={i} className="rounded-full border px-2 py-0.5 text-[10px] font-medium" style={{ borderColor: PURPLE, color: PURPLE }}>{t}</span>
+                ))}
+              </div>
+            )}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}
@@ -126,7 +133,7 @@ function StartupSectionContent({ section }: { section: any }) {
             <div className="flex items-baseline justify-between">
               <h3 className="text-sm font-bold text-zinc-800">{item.name}</h3>
               {item.startDate && (
-                <span className="shrink-0 text-xs text-zinc-400">{item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}</span>
+                <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>
               )}
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}

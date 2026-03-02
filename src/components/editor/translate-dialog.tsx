@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/routing';
 import {
   Dialog,
   DialogContent,
@@ -13,8 +14,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { useResumeStore } from '@/stores/resume-store';
 import { LanguageSelect } from '@/components/ui/language-select';
-import { Languages, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Languages, Loader2, CheckCircle2, AlertCircle, FileEdit, FilePlus2 } from 'lucide-react';
 import { getAIHeaders } from '@/stores/settings-store';
+import { cn } from '@/lib/utils';
 
 interface TranslateDialogProps {
   open: boolean;
@@ -22,6 +24,7 @@ interface TranslateDialogProps {
   resumeId: string;
 }
 
+type TranslateMode = 'overwrite' | 'copy';
 type TranslateState = 'idle' | 'translating' | 'success' | 'error';
 
 interface Progress {
@@ -60,12 +63,14 @@ async function readNDJSON(
 
 export function TranslateDialog({ open, onOpenChange, resumeId }: TranslateDialogProps) {
   const t = useTranslations('translate');
+  const router = useRouter();
   const currentResume = useResumeStore((s) => s.currentResume);
 
   const currentLanguage = currentResume?.language || 'en';
   const defaultTarget = currentLanguage === 'zh' ? 'en' : 'zh';
 
   const [targetLanguage, setTargetLanguage] = useState(defaultTarget);
+  const [mode, setMode] = useState<TranslateMode>('overwrite');
   const [state, setState] = useState<TranslateState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [progress, setProgress] = useState<Progress>({ completed: 0, total: 0 });
@@ -79,6 +84,7 @@ export function TranslateDialog({ open, onOpenChange, resumeId }: TranslateDialo
       setErrorMessage('');
       setProgress({ completed: 0, total: 0 });
       setFailedCount(0);
+      setMode('overwrite');
       const lang = useResumeStore.getState().currentResume?.language || 'en';
       setTargetLanguage(lang === 'zh' ? 'en' : 'zh');
     } else {
@@ -105,7 +111,7 @@ export function TranslateDialog({ open, onOpenChange, resumeId }: TranslateDialo
           ...(fingerprint ? { 'x-fingerprint': fingerprint } : {}),
           ...getAIHeaders(),
         },
-        body: JSON.stringify({ resumeId, targetLanguage }),
+        body: JSON.stringify({ resumeId, targetLanguage, mode }),
         signal: controller.signal,
       });
 
@@ -121,39 +127,49 @@ export function TranslateDialog({ open, onOpenChange, resumeId }: TranslateDialo
             total: data.total as number,
           });
 
-          // Apply each translated section to the store in real-time
-          const section = data.section as { sectionId: string; title: string; content: any } | undefined;
-          if (section) {
-            const current = useResumeStore.getState().currentResume;
-            if (current) {
-              useResumeStore.getState().setResume({
-                ...current,
-                sections: current.sections.map((s: any) =>
-                  s.id === section.sectionId
-                    ? { ...s, title: section.title, content: section.content }
-                    : s
-                ),
-              });
+          // In overwrite mode, apply each translated section to the store in real-time
+          if (mode === 'overwrite') {
+            const section = data.section as { sectionId: string; title: string; content: any } | undefined;
+            if (section) {
+              const current = useResumeStore.getState().currentResume;
+              if (current) {
+                useResumeStore.getState().setResume({
+                  ...current,
+                  sections: current.sections.map((s: any) =>
+                    s.id === section.sectionId
+                      ? { ...s, title: section.title, content: section.content }
+                      : s
+                  ),
+                });
+              }
             }
           }
         } else if (data.type === 'done') {
-          // Final sync — set language and ensure all sections are up-to-date
-          const current = useResumeStore.getState().currentResume;
-          if (current) {
-            useResumeStore.getState().setResume({
-              ...current,
-              language: data.language as string,
-              sections: data.sections as any,
-            });
-          }
-
           const failed = (data.failedCount as number) || 0;
           setFailedCount(failed);
           setState('success');
 
-          setTimeout(() => {
-            onOpenChange(false);
-          }, 1500);
+          if (mode === 'copy' && data.newResumeId) {
+            // Copy mode: navigate to the new resume
+            setTimeout(() => {
+              onOpenChange(false);
+              router.push(`/editor/${data.newResumeId}`);
+            }, 1500);
+          } else {
+            // Overwrite mode: sync store and close
+            const current = useResumeStore.getState().currentResume;
+            if (current) {
+              useResumeStore.getState().setResume({
+                ...current,
+                language: data.language as string,
+                sections: data.sections as any,
+              });
+            }
+
+            setTimeout(() => {
+              onOpenChange(false);
+            }, 1500);
+          }
         }
       });
     } catch (err: any) {
@@ -161,11 +177,16 @@ export function TranslateDialog({ open, onOpenChange, resumeId }: TranslateDialo
       setState('error');
       setErrorMessage(err.message || t('error'));
     }
-  }, [resumeId, targetLanguage, onOpenChange, t]);
+  }, [resumeId, targetLanguage, mode, onOpenChange, t, router]);
 
   const progressPercent = progress.total > 0
     ? Math.round((progress.completed / progress.total) * 100)
     : 0;
+
+  const modeOptions: { value: TranslateMode; label: string; desc: string; icon: React.ReactNode }[] = [
+    { value: 'overwrite', label: t('modeOverwrite'), desc: t('modeOverwriteDesc'), icon: <FileEdit className="h-4 w-4" /> },
+    { value: 'copy', label: t('modeCopy'), desc: t('modeCopyDesc'), icon: <FilePlus2 className="h-4 w-4" /> },
+  ];
 
   return (
     <Dialog open={open} onOpenChange={(o) => { if (!o && state !== 'translating') onOpenChange(false); }}>
@@ -181,12 +202,52 @@ export function TranslateDialog({ open, onOpenChange, resumeId }: TranslateDialo
         <div className="px-6 py-5 space-y-4">
           {/* Language Selector */}
           {state === 'idle' && (
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                {t('targetLanguage')}
-              </label>
-              <LanguageSelect value={targetLanguage} onValueChange={setTargetLanguage} />
-            </div>
+            <>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t('targetLanguage')}
+                </label>
+                <LanguageSelect value={targetLanguage} onValueChange={setTargetLanguage} />
+              </div>
+
+              {/* Mode Selector */}
+              <div className="grid grid-cols-2 gap-2.5">
+                {modeOptions.map((opt) => {
+                  const active = mode === opt.value;
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setMode(opt.value)}
+                      className={cn(
+                        'relative flex flex-col items-center gap-1.5 rounded-xl border-2 px-3 py-3 text-center transition-all cursor-pointer',
+                        active
+                          ? 'border-pink-500 bg-pink-50 dark:bg-pink-950/30 dark:border-pink-400'
+                          : 'border-zinc-200 bg-white hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800/50 dark:hover:border-zinc-600'
+                      )}
+                    >
+                      <span className={cn(
+                        'flex h-8 w-8 items-center justify-center rounded-lg transition-colors',
+                        active
+                          ? 'bg-pink-500 text-white'
+                          : 'bg-zinc-100 text-zinc-500 dark:bg-zinc-700 dark:text-zinc-400'
+                      )}>
+                        {opt.icon}
+                      </span>
+                      <span className={cn(
+                        'text-sm font-semibold',
+                        active ? 'text-pink-600 dark:text-pink-400' : 'text-zinc-700 dark:text-zinc-300'
+                      )}>
+                        {opt.label}
+                      </span>
+                      <span className="text-[11px] leading-tight text-zinc-400 dark:text-zinc-500">
+                        {opt.desc}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </>
           )}
 
           {/* Translating State */}

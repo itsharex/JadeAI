@@ -11,15 +11,16 @@ import type {
 } from '@/types/resume';
 import { esc, getPersonalInfo, visibleSections, buildHighlights, type ResumeWithSections, type Section } from '../utils';
 
-function buildDesignerSectionContent(section: Section): string {
+function buildDesignerSectionContent(section: Section, lang: string = 'en'): string {
   const c = section.content as any;
   const CORAL = '#ff6b6b';
   if (section.type === 'summary') return `<p class="border-l-4 pl-4 text-sm leading-relaxed text-zinc-600" style="border-color:${CORAL}">${esc((c as SummaryContent).text)}</p>`;
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="rounded-lg bg-zinc-50 p-4">
-      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold text-black">${esc(it.position)}</h3><span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.current ? 'Present' : esc(it.endDate)}</span></div>
+      <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold text-black">${esc(it.position)}</h3><span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.current ? (lang === 'zh' ? '至今' : 'Present') : esc(it.endDate)}</span></div>
       ${it.company ? `<p class="text-sm font-medium" style="color:${CORAL}">${esc(it.company)}</p>` : ''}
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
+      ${it.technologies?.length ? `<div class="mt-1.5 flex flex-wrap gap-1.5">${it.technologies.map((t: string) => `<span class="rounded-full px-2.5 py-0.5 text-[10px] font-medium text-white" style="background:${CORAL}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
     </div>`).join('')}</div>`;
   }
@@ -37,7 +38,7 @@ function buildDesignerSectionContent(section: Section): string {
   }
   if (section.type === 'projects') {
     return `<div class="space-y-4">${((c as ProjectsContent).items || []).map((it: any) => `<div class="rounded-lg bg-zinc-50 p-4">
-      <div class="flex items-baseline justify-between"><span class="text-sm font-bold text-black">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)}${it.endDate ? ` – ${esc(it.endDate)}` : ''}</span>` : ''}</div>
+      <div class="flex items-baseline justify-between"><span class="text-sm font-bold text-black">${esc(it.name)}</span>${it.startDate ? `<span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
       ${it.description ? `<p class="mt-1 text-sm text-zinc-600">${esc(it.description)}</p>` : ''}
       ${it.technologies?.length ? `<div class="mt-1.5 flex flex-wrap gap-1.5">${it.technologies.map((t: string) => `<span class="rounded-full px-2.5 py-0.5 text-[10px] font-medium text-white" style="background:${CORAL}">${esc(t)}</span>`).join('')}</div>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
@@ -92,7 +93,7 @@ export function buildDesignerHtml(resume: ResumeWithSections): string {
     <div class="p-8">
       ${sections.map(s => `<div class="mb-6" data-section>
         <h2 class="mb-3 text-xs font-black uppercase tracking-[0.3em]" style="color:${CORAL}">${esc(s.title)}</h2>
-        ${buildDesignerSectionContent(s)}
+        ${buildDesignerSectionContent(s, resume.language || 'en')}
       </div>`).join('')}
     </div>
   </div>`;

@@ -40,7 +40,7 @@ export function ExecutiveTemplate({ resume }: { resume: Resume }) {
               <h2 className="mb-3 border-b-2 pb-1 text-sm font-bold uppercase tracking-wider" style={{ color: CHARCOAL, borderColor: EMERALD }}>
                 {section.title}
               </h2>
-              <ExecutiveSectionContent section={section} />
+              <ExecutiveSectionContent section={section} resume={resume} />
             </div>
           ))}
       </div>
@@ -48,7 +48,7 @@ export function ExecutiveTemplate({ resume }: { resume: Resume }) {
   );
 }
 
-function ExecutiveSectionContent({ section }: { section: any }) {
+function ExecutiveSectionContent({ section, resume }: { section: any; resume: Resume }) {
   const content = section.content;
 
   if (section.type === 'summary') {
@@ -66,10 +66,11 @@ function ExecutiveSectionContent({ section }: { section: any }) {
                 {item.company && <span className="text-sm text-zinc-600"> | {item.company}</span>}
               </div>
               <span className="shrink-0 rounded px-2 py-0.5 text-xs font-medium text-white" style={{ background: EMERALD }}>
-                {item.startDate} – {item.current ? 'Present' : item.endDate}
+                {item.startDate} – {item.current ? (resume.language === 'zh' ? '至今' : 'Present') : item.endDate}
               </span>
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
+            {item.technologies?.length > 0 && <p className="mt-0.5 text-xs text-zinc-400">{resume.language === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-5">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}
@@ -129,12 +130,12 @@ function ExecutiveSectionContent({ section }: { section: any }) {
               <span className="text-sm font-bold" style={{ color: CHARCOAL }}>{item.name}</span>
               {item.startDate && (
                 <span className="shrink-0 rounded px-2 py-0.5 text-xs font-medium text-white" style={{ background: EMERALD }}>
-                  {item.startDate}{item.endDate ? ` – ${item.endDate}` : ''}
+                  {item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}
                 </span>
               )}
             </div>
             {item.description && <p className="mt-1 text-sm text-zinc-600">{item.description}</p>}
-            {item.technologies?.length > 0 && <p className="mt-0.5 text-xs text-zinc-400">Tech: {item.technologies.join(', ')}</p>}
+            {item.technologies?.length > 0 && <p className="mt-0.5 text-xs text-zinc-400">{resume.language === 'zh' ? '技术栈' : 'Tech'}: {item.technologies.join(', ')}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-5">
                 {item.highlights.map((h: string, i: number) => <li key={i} className="text-sm text-zinc-600">{h}</li>)}
