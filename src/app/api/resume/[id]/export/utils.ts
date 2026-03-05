@@ -156,7 +156,7 @@ export function buildExportThemeCSS(theme: typeof DEFAULT_THEME, template: strin
       --base-margin-left: ${m.left}px;
       --needs-padding: ${needsPadding ? '1' : '0'};
     }
-    ${sel} p, ${sel} li, ${sel} span:not(.shrink-0), ${sel} td, ${sel} a {
+    ${sel} p, ${sel} li, ${sel} span, ${sel} td, ${sel} a {
       font-size: ${fs.body} !important;
       line-height: ${theme.lineSpacing} !important;
     }
@@ -167,6 +167,11 @@ export function buildExportThemeCSS(theme: typeof DEFAULT_THEME, template: strin
     ${sel} h3:not([style*="color"]) { color: ${theme.primaryColor} !important; font-size: ${fs.h3} !important; }
     ${sel} h3[style*="color"] { font-size: ${fs.h3} !important; }
     ${sel} [class*="border-b-2"], ${sel} [class*="border-b-"] { border-color: ${theme.accentColor} !important; }
+    ${sel} [class*="bg-blue-"], ${sel} [class*="bg-indigo-"],
+    ${sel} [class*="bg-slate-800"], ${sel} [class*="bg-zinc-800"],
+    ${sel} [class*="bg-teal-"], ${sel} [class*="bg-emerald-"] {
+      background-color: ${theme.accentColor} !important;
+    }
     ${sel} [data-section] { ${needsPadding ? `margin-bottom: ${theme.sectionSpacing}px` : `padding-bottom: ${theme.sectionSpacing}px`} !important; }
     ${primaryIsDark ? `
     ${sel} [style*="background"][style*="#"] h1:not([style*="color"]),

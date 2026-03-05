@@ -29,7 +29,7 @@ function buildMagazineSectionContent(section: Section, lang: string): string {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="border-l-2 pl-4" style="border-color:${ACCENT}">
       <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.position)}</h3><span class="shrink-0 text-xs font-medium" style="color:${ACCENT}">${esc(it.startDate)} - ${esc(it.endDate) || (it.current ? (lang === 'zh' ? '至今' : 'Present') : '')}</span></div>
       ${it.company ? `<p class="text-sm font-medium italic" style="color:${SECONDARY}">${esc(it.company)}${it.location ? `, ${esc(it.location)}` : ''}</p>` : ''}
-      ${it.description ? `<p class="mt-1 text-sm" style="color:${SECONDARY}">${md(it.description)}</p>` : ''}
+      ${it.description ? `<div class="mt-1 text-sm" style="color:${SECONDARY}">${md(it.description)}</div>` : ''}
       ${it.technologies?.length ? `<p class="mt-1 text-xs italic" style="color:${ACCENT}">${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1.5 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:${SECONDARY}"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rotate-45" style="background-color:${ACCENT}"></span>${md(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
@@ -53,7 +53,7 @@ function buildMagazineSectionContent(section: Section, lang: string): string {
   if (section.type === 'projects') {
     return `<div class="grid grid-cols-2 gap-4">${((c as ProjectsContent).items || []).map((it: any) => `<div class="border-l-2 pl-4" style="border-color:${ACCENT}">
       <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</h3>${it.startDate ? `<span class="text-xs" style="color:${SECONDARY}">${esc(it.startDate)} - ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : ''}</div>
-      ${it.description ? `<p class="mt-0.5 text-sm" style="color:${SECONDARY}">${md(it.description)}</p>` : ''}
+      ${it.description ? `<div class="mt-0.5 text-sm" style="color:${SECONDARY}">${md(it.description)}</div>` : ''}
       ${it.technologies?.length ? `<p class="mt-1 text-xs italic" style="color:${ACCENT}">${esc(it.technologies.join(', '))}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:${SECONDARY}"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rotate-45" style="background-color:${ACCENT}"></span>${md(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;
@@ -75,7 +75,7 @@ function buildMagazineSectionContent(section: Section, lang: string): string {
     return `<div class="space-y-3">${((c as GitHubContent).items || []).map((it: any) => `<div class="border-l-2 pl-4" style="border-color:${ACCENT}">
       <div class="flex items-baseline justify-between"><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name)}</span><span class="text-xs" style="color:${SECONDARY}">\u2B50 ${it.stars?.toLocaleString() ?? 0}</span></div>
       ${it.language ? `<span class="text-xs" style="color:${ACCENT}">${esc(it.language)}</span>` : ''}
-      ${it.description ? `<p class="mt-1 text-sm" style="color:${SECONDARY}">${md(it.description)}</p>` : ''}
+      ${it.description ? `<div class="mt-1 text-sm" style="color:${SECONDARY}">${md(it.description)}</div>` : ''}
     </div>`).join('')}</div>`;
   }
 
@@ -83,14 +83,14 @@ function buildMagazineSectionContent(section: Section, lang: string): string {
     return `<div class="space-y-3">${((c as CustomContent).items || []).map((it: any) => `<div class="border-l-2 pl-4" style="border-color:${ACCENT}">
       <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.title)}</h3>${it.date ? `<span class="text-xs" style="color:${SECONDARY}">${esc(it.date)}</span>` : ''}</div>
       ${it.subtitle ? `<p class="text-sm italic" style="color:${SECONDARY}">${esc(it.subtitle)}</p>` : ''}
-      ${it.description ? `<p class="mt-1 text-sm" style="color:${SECONDARY}">${md(it.description)}</p>` : ''}
+      ${it.description ? `<div class="mt-1 text-sm" style="color:${SECONDARY}">${md(it.description)}</div>` : ''}
     </div>`).join('')}</div>`;
   }
 
   if (section.type === 'qr_codes') return buildQrCodesHtml(section);
 
   if (c.items) {
-    return `<div class="space-y-2">${c.items.map((it: any) => `<div class="border-l-2 pl-4" style="border-color:${ACCENT}"><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name || it.title || it.language)}</span>${it.description ? `<p class="text-sm" style="color:${SECONDARY}">${md(it.description)}</p>` : ''}</div>`).join('')}</div>`;
+    return `<div class="space-y-2">${c.items.map((it: any) => `<div class="border-l-2 pl-4" style="border-color:${ACCENT}"><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.name || it.title || it.language)}</span>${it.description ? `<div class="text-sm" style="color:${SECONDARY}">${md(it.description)}</div>` : ''}</div>`).join('')}</div>`;
   }
 
   return '';

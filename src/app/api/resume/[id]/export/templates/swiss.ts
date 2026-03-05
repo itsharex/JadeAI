@@ -17,7 +17,7 @@ const TEXT = '#18181b';
 function buildSwissSectionContent(section: Section, lang: string): string {
   const c = section.content as any;
 
-  if (section.type === 'summary') return `<p class="text-sm leading-relaxed" style="color:#3f3f46">${md((c as SummaryContent).text)}</p>`;
+  if (section.type === 'summary') return `<div class="text-sm leading-relaxed" style="color:#3f3f46">${md((c as SummaryContent).text)}</div>`;
 
   if (section.type === 'work_experience') {
     return `<div class="space-y-4">${((c as WorkExperienceContent).items || []).map((it: any) => `<div class="grid grid-cols-[140px_1fr] gap-4">
@@ -25,7 +25,7 @@ function buildSwissSectionContent(section: Section, lang: string): string {
       <div>
         <h3 class="text-sm font-bold" style="color:${TEXT}">${esc(it.position)}</h3>
         ${it.company ? `<p class="text-sm" style="color:${RED}">${esc(it.company)}</p>` : ''}
-        ${it.description ? `<p class="mt-1 text-sm" style="color:#3f3f46">${md(it.description)}</p>` : ''}
+        ${it.description ? `<div class="mt-1 text-sm" style="color:#3f3f46">${md(it.description)}</div>` : ''}
         ${it.technologies?.length ? `<p class="mt-0.5 text-xs" style="color:#71717a">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(', '))}</p>` : ''}
         ${it.highlights?.length ? `<ul class="mt-1 list-none space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:#3f3f46"><span class="mt-1.5 inline-block h-1 w-1 shrink-0" style="background-color:${RED}"></span>${md(h)}</li>`).join('')}</ul>` : ''}
       </div>
@@ -55,7 +55,7 @@ function buildSwissSectionContent(section: Section, lang: string): string {
       ${it.startDate ? `<span class="text-xs" style="color:#71717a">${esc(it.startDate)} \u2013 ${it.endDate ? esc(it.endDate) : (lang === 'zh' ? '至今' : 'Present')}</span>` : '<span></span>'}
       <div>
         <h3 class="text-sm font-bold" style="color:${TEXT}">${esc(it.name)}</h3>
-        ${it.description ? `<p class="mt-0.5 text-sm" style="color:#3f3f46">${md(it.description)}</p>` : ''}
+        ${it.description ? `<div class="mt-0.5 text-sm" style="color:#3f3f46">${md(it.description)}</div>` : ''}
         ${it.technologies?.length ? `<p class="mt-0.5 text-xs" style="color:#71717a">${lang === 'zh' ? '技术栈' : 'Tech'}: ${esc(it.technologies.join(', '))}</p>` : ''}
         ${it.highlights?.length ? `<ul class="mt-1 list-none space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:#3f3f46"><span class="mt-1.5 inline-block h-1 w-1 shrink-0" style="background-color:${RED}"></span>${md(h)}</li>`).join('')}</ul>` : ''}
       </div>
@@ -80,7 +80,7 @@ function buildSwissSectionContent(section: Section, lang: string): string {
       <div>
         <h3 class="text-sm font-bold" style="color:${TEXT}">${esc(it.name)}</h3>
         ${it.language ? `<span class="text-xs" style="color:${RED}">${esc(it.language)}</span>` : ''}
-        ${it.description ? `<p class="mt-0.5 text-sm" style="color:#3f3f46">${md(it.description)}</p>` : ''}
+        ${it.description ? `<div class="mt-0.5 text-sm" style="color:#3f3f46">${md(it.description)}</div>` : ''}
       </div>
     </div>`).join('')}</div>`;
   }
@@ -91,7 +91,7 @@ function buildSwissSectionContent(section: Section, lang: string): string {
       <div>
         <h3 class="text-sm font-bold" style="color:${TEXT}">${esc(it.title)}</h3>
         ${it.subtitle ? `<p class="text-sm" style="color:${RED}">${esc(it.subtitle)}</p>` : ''}
-        ${it.description ? `<p class="mt-0.5 text-sm" style="color:#3f3f46">${md(it.description)}</p>` : ''}
+        ${it.description ? `<div class="mt-0.5 text-sm" style="color:#3f3f46">${md(it.description)}</div>` : ''}
       </div>
     </div>`).join('')}</div>`;
   }
@@ -99,7 +99,7 @@ function buildSwissSectionContent(section: Section, lang: string): string {
   if (section.type === 'qr_codes') return buildQrCodesHtml(section);
 
   if (c.items) {
-    return `<div class="space-y-2">${c.items.map((it: any) => `<div><span class="text-sm font-bold" style="color:${TEXT}">${esc(it.name || it.title || it.language)}</span>${it.description ? `<p class="text-sm" style="color:#3f3f46">${md(it.description)}</p>` : ''}</div>`).join('')}</div>`;
+    return `<div class="space-y-2">${c.items.map((it: any) => `<div><span class="text-sm font-bold" style="color:${TEXT}">${esc(it.name || it.title || it.language)}</span>${it.description ? `<div class="text-sm" style="color:#3f3f46">${md(it.description)}</div>` : ''}</div>`).join('')}</div>`;
   }
 
   return '';
