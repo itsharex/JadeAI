@@ -9,7 +9,7 @@ import type {
   CustomContent,
   GitHubContent,
 } from '@/types/resume';
-import { esc, md, getPersonalInfo, visibleSections, buildHighlights, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
+import { esc, md, degreeField, getPersonalInfo, visibleSections, buildHighlights, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
 
 const GRADIENT = 'linear-gradient(135deg,#ec4899 0%,#8b5cf6 100%)';
 const ACCENT = '#a855f7';
@@ -32,7 +32,7 @@ function buildGradientSectionContent(section: Section, lang: string): string {
   if (section.type === 'education') {
     return `<div class="space-y-3">${((c as EducationContent).items || []).map((it: any) => `<div class="border-l-2 pl-4" style="border-image:${GRADIENT};border-image-slice:1">
       <div class="flex items-baseline justify-between"><h3 class="text-sm font-semibold text-zinc-800">${esc(it.institution)}</h3><span class="text-xs text-zinc-400">${esc(it.startDate)} - ${esc(it.endDate) || (lang === 'zh' ? '至今' : 'Present')}</span></div>
-      <p class="text-sm text-zinc-600">${esc(it.degree)}${it.field ? ` in ${esc(it.field)}` : ''}</p>
+      <p class="text-sm text-zinc-600">${esc(degreeField(it.degree, it.field))}</p>
       ${it.gpa ? `<p class="text-xs text-zinc-500">GPA: ${esc(it.gpa)}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
     </div>`).join('')}</div>`;

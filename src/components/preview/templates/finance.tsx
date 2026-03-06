@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, CustomContent, GitHubContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const SLATE_800 = '#1e293b';
@@ -112,7 +112,7 @@ function FinanceSectionContent({ section, resume }: { section: any; resume: Resu
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-bold" style={{ color: SLATE_800 }}>{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-bold" style={{ color: SLATE_800 }}>{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-slate-600"> - {item.institution}</span>}
               </div>
               <span className="shrink-0 text-xs italic text-slate-400">{item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>

@@ -9,7 +9,7 @@ import type {
   CustomContent,
   GitHubContent,
 } from '@/types/resume';
-import { esc, md, getPersonalInfo, visibleSections, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
+import { esc, md, degreeField, getPersonalInfo, visibleSections, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
 import { buildClassicSectionContent } from './classic';
 
 const PRIMARY = '#1e293b';
@@ -38,7 +38,7 @@ function buildEngineerSectionContent(section: Section, lang: string = 'en'): str
 
   if (section.type === 'education') {
     return `<div class="space-y-3">${((c as EducationContent).items || []).map((it: any) => `<div>
-      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(it.degree)}${it.field ? ` in ${esc(it.field)}` : ''}</span>${it.institution ? `<span class="text-sm" style="color:${SECONDARY}"> — ${esc(it.institution)}</span>` : ''}</div><span class="shrink-0 text-xs" style="font-family:JetBrains Mono,Consolas,monospace;color:${SECONDARY}">${esc(it.startDate)} - ${esc(it.endDate) || (lang === 'zh' ? '至今' : 'Present')}</span></div>
+      <div class="flex items-baseline justify-between"><div><span class="text-sm font-bold" style="color:${PRIMARY}">${esc(degreeField(it.degree, it.field))}</span>${it.institution ? `<span class="text-sm" style="color:${SECONDARY}"> — ${esc(it.institution)}</span>` : ''}</div><span class="shrink-0 text-xs" style="font-family:JetBrains Mono,Consolas,monospace;color:${SECONDARY}">${esc(it.startDate)} - ${esc(it.endDate) || (lang === 'zh' ? '至今' : 'Present')}</span></div>
       ${it.gpa ? `<p class="text-xs" style="color:${SECONDARY}">GPA: ${esc(it.gpa)}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 space-y-0.5">${it.highlights.filter(Boolean).map((h: string) => `<li class="flex items-start gap-2 text-sm" style="color:${BODY_TEXT}"><span class="mt-1.5 h-1 w-1 shrink-0" style="background-color:${ACCENT}"></span>${esc(h)}</li>`).join('')}</ul>` : ''}
     </div>`).join('')}</div>`;

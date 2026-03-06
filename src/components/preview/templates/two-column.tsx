@@ -14,7 +14,7 @@ import type {
   GitHubContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 // Left sidebar section types
@@ -309,7 +309,7 @@ function RightSectionContent({ section, resume }: { section: any; resume: Resume
               <span className="text-sm font-semibold text-zinc-800">{item.institution}</span>
               <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>
             </div>
-            <p className="text-sm text-zinc-600">{item.degree}{item.field ? ` in ${item.field}` : ''}</p>
+            <p className="text-sm text-zinc-600">{degreeField(item.degree, item.field)}</p>
             {item.gpa && <p className="text-xs text-zinc-500">GPA: {item.gpa}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">

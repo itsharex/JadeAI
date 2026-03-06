@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, CustomContent, GitHubContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const BLUE = '#1e40af';
@@ -32,6 +32,8 @@ export function EuroTemplate({ resume }: { resume: Resume }) {
             {pi.wechat && <div><span className="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">WeChat</span>{pi.wechat}</div>}
             {pi.location && <div><span className="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Address</span>{pi.location}</div>}
             {pi.website && <div><span className="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Website</span>{pi.website}</div>}
+            {pi.linkedin && <div><span className="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">LinkedIn</span>{pi.linkedin}</div>}
+            {pi.github && <div><span className="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">GitHub</span>{pi.github}</div>}
           </div>
         </div>
         {pi.avatar && (
@@ -99,7 +101,7 @@ function EuroSectionContent({ section, resume }: { section: any; resume: Resume 
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-bold text-zinc-800">{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-bold text-zinc-800">{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-zinc-500"> — {item.institution}</span>}
               </div>
               <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>

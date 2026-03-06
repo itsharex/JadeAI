@@ -9,7 +9,7 @@ import type {
   CustomContent,
   GitHubContent,
 } from '@/types/resume';
-import { esc, md, getPersonalInfo, visibleSections, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
+import { esc, md, degreeField, getPersonalInfo, visibleSections, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
 
 const PRIMARY = '#1c1917';
 const ACCENT = '#a8a29e';
@@ -36,7 +36,7 @@ function buildJapaneseSectionContent(section: Section, lang: string): string {
   if (section.type === 'education') {
     return `<div class="space-y-5">${((c as EducationContent).items || []).map((it: any) => `<div>
       <div class="flex items-baseline justify-between">
-        <h3 class="text-sm font-normal" style="color:${PRIMARY}">${esc(it.degree)}${it.field ? ` in ${esc(it.field)}` : ''}</h3>
+        <h3 class="text-sm font-normal" style="color:${PRIMARY}">${esc(degreeField(it.degree, it.field))}</h3>
         <span class="shrink-0 text-[10px] font-light" style="color:${ACCENT}">${esc(it.startDate)} &ndash; ${esc(it.endDate) || (lang === 'zh' ? '至今' : 'Present')}</span>
       </div>
       ${it.institution ? `<p class="mt-0.5 text-xs font-light" style="color:${ACCENT}">${esc(it.institution)}${it.location ? `, ${esc(it.location)}` : ''}</p>` : ''}

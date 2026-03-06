@@ -14,14 +14,14 @@ import type {
   CustomContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 export function AtsTemplate({ resume }: { resume: Resume }) {
   const personalInfo = resume.sections.find((s) => s.type === 'personal_info');
   const pi = (personalInfo?.content || {}) as PersonalInfoContent;
 
-  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website, pi.linkedin, pi.github].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return (
     <div className="mx-auto max-w-[210mm] bg-white shadow-lg" style={{ fontFamily: 'Arial, Helvetica, sans-serif' }}>
@@ -41,6 +41,11 @@ export function AtsTemplate({ resume }: { resume: Resume }) {
           {contacts.length > 0 && (
             <p className="mt-1 text-sm text-zinc-700">
               {contacts.join(' | ')}
+            </p>
+          )}
+          {(pi.linkedin || pi.github) && (
+            <p className="mt-0.5 text-sm text-zinc-700">
+              {[pi.linkedin && `LinkedIn: ${pi.linkedin}`, pi.github && `GitHub: ${pi.github}`].filter(Boolean).join(' | ')}
             </p>
           )}
         </div>
@@ -109,7 +114,7 @@ function AtsSectionContent({ section, resume }: { section: any; resume: Resume }
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-bold text-black">{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-bold text-black">{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-zinc-700">, {item.institution}</span>}
                 {item.location && <span className="text-sm text-zinc-500">, {item.location}</span>}
               </div>

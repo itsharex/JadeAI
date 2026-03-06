@@ -14,7 +14,7 @@ import type {
   GitHubContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const RED = '#dc2626';
@@ -118,7 +118,7 @@ function SwissSectionContent({ section, lang }: { section: any; lang?: string })
           <div key={item.id} className="grid grid-cols-[140px_1fr] gap-4">
             <span className="text-xs" style={{ color: '#52525b' }}>{item.startDate} &ndash; {item.endDate || (lang === 'zh' ? '至今' : 'Present')}</span>
             <div>
-              <h3 className="text-sm font-bold" style={{ color: TEXT }}>{item.degree}{item.field ? ` in ${item.field}` : ''}</h3>
+              <h3 className="text-sm font-bold" style={{ color: TEXT }}>{degreeField(item.degree, item.field)}</h3>
               {item.institution && <p className="text-sm" style={{ color: RED }}>{item.institution}</p>}
               {item.gpa && <p className="text-xs" style={{ color: '#52525b' }}>GPA: {item.gpa}</p>}
               {item.highlights?.length > 0 && (

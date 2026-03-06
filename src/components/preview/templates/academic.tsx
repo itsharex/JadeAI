@@ -14,14 +14,14 @@ import type {
   CustomContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 export function AcademicTemplate({ resume }: { resume: Resume }) {
   const personalInfo = resume.sections.find((s) => s.type === 'personal_info');
   const pi = (personalInfo?.content || {}) as PersonalInfoContent;
 
-  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website, pi.linkedin, pi.github].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return (
     <div className="mx-auto max-w-[210mm] bg-white shadow-lg" style={{ fontFamily: '"Computer Modern", "CMU Serif", Georgia, "Times New Roman", serif' }}>
@@ -119,7 +119,7 @@ function AcademicSectionContent({ section, resume }: { section: any; resume: Res
             <div className="flex items-baseline justify-between">
               <div>
                 <span className="text-sm font-bold text-zinc-800">{item.degree}</span>
-                {item.field && <span className="text-sm text-zinc-600"> in {item.field}</span>}
+                {item.field && <span className="text-sm text-zinc-600"> - {item.field}</span>}
               </div>
               <span className="shrink-0 text-xs text-zinc-500">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>
             </div>

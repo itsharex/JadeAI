@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, CustomContent, GitHubContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { isSectionEmpty, md, degreeField } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const DARK = '#282c34';
@@ -116,7 +116,7 @@ function DeveloperSectionContent({ section, resume }: { section: any; resume: Re
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-bold" style={{ color: DARK }}>{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-bold" style={{ color: DARK }}>{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-zinc-500"> — {item.institution}</span>}
               </div>
               <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>

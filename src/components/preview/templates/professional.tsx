@@ -13,7 +13,7 @@ import type {
   CustomContent,
   GitHubContent,
 } from '@/types/resume';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { AvatarImage } from '../avatar-image';
 import { QrCodesPreview } from '../qr-codes-preview';
 
@@ -21,7 +21,7 @@ export function ProfessionalTemplate({ resume }: { resume: Resume }) {
   const personalInfo = resume.sections.find((s) => s.type === 'personal_info');
   const pi = (personalInfo?.content || {}) as PersonalInfoContent;
 
-  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website, pi.linkedin, pi.github].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return (
     <div className="mx-auto max-w-[210mm] bg-white shadow-lg" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
@@ -124,7 +124,7 @@ function ProfessionalSectionContent({ section, lang }: { section: any; lang?: st
               </div>
               <span className="shrink-0 text-xs text-zinc-400 italic">{item.startDate} – {item.endDate || (lang === 'zh' ? '至今' : 'Present')}</span>
             </div>
-            <p className="text-sm text-zinc-600">{item.degree}{item.field ? ` in ${item.field}` : ''}</p>
+            <p className="text-sm text-zinc-600">{degreeField(item.degree, item.field)}</p>
             {item.gpa && <p className="text-xs text-zinc-500">GPA: {item.gpa}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-5">

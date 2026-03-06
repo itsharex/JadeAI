@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, GitHubContent, CustomContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const PRIMARY = '#1e3a5f';
@@ -60,6 +60,8 @@ export function ArchitectTemplate({ resume }: { resume: Resume }) {
               {pi.wechat && <p>{pi.wechat}</p>}
               {pi.location && <p>{pi.location}</p>}
               {pi.website && <p>{pi.website}</p>}
+              {pi.linkedin && <p>{pi.linkedin}</p>}
+              {pi.github && <p>{pi.github}</p>}
             </div>
           </div>
         </div>
@@ -152,7 +154,7 @@ function ArchitectSectionContent({ section, resume }: { section: any; resume: Re
             <div className="flex items-baseline justify-between">
               <div>
                 <span className="text-sm font-bold" style={{ color: PRIMARY }}>
-                  {item.degree}{item.field ? ` in ${item.field}` : ''}
+                  {degreeField(item.degree, item.field)}
                 </span>
                 {item.institution && <span className="text-sm" style={{ color: MUTED }}> — {item.institution}</span>}
                 {item.location && <span className="text-sm" style={{ color: MUTED }}>, {item.location}</span>}

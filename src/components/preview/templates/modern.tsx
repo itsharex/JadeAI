@@ -1,7 +1,7 @@
 'use client';
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, CustomContent, GitHubContent } from '@/types/resume';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { AvatarImage } from '../avatar-image';
 import { QrCodesPreview } from '../qr-codes-preview';
 
@@ -116,7 +116,7 @@ function ModernSectionContent({ section, lang }: { section: any; lang?: string }
         {(content.items || []).map((item: any) => (
           <div key={item.id} className="border-l-2 pl-4" style={{ borderColor: '#0f3460' }}>
             <h3 className="text-sm font-semibold text-zinc-800">{item.institution}</h3>
-            <p className="text-sm text-zinc-600">{item.degree} {item.field && `- ${item.field}`}</p>
+            <p className="text-sm text-zinc-600">{degreeField(item.degree, item.field)}</p>
             <span className="text-xs text-zinc-400">{item.startDate} - {item.endDate || (lang === 'zh' ? '至今' : 'Present')}</span>
             {item.gpa && <p className="mt-0.5 text-xs text-zinc-500">GPA: {item.gpa}</p>}
             {item.highlights?.length > 0 && (

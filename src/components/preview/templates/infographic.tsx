@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, CustomContent, GitHubContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const COLORS = ['#3b82f6', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899'];
@@ -36,6 +36,8 @@ export function InfographicTemplate({ resume }: { resume: Resume }) {
               {pi.wechat && <span>{pi.wechat}</span>}
               {pi.location && <span>{pi.location}</span>}
               {pi.website && <span>{pi.website}</span>}
+              {pi.linkedin && <span className="break-all">{pi.linkedin}</span>}
+              {pi.github && <span className="break-all">{pi.github}</span>}
             </div>
           </div>
         </div>
@@ -108,7 +110,7 @@ function InfographicSectionContent({ section, colorIndex, resume }: { section: a
           <div key={item.id} className="rounded-lg border border-zinc-100 p-4">
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-bold text-zinc-800">{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-bold text-zinc-800">{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-zinc-500"> — {item.institution}</span>}
               </div>
               <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>

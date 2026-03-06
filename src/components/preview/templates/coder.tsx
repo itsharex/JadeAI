@@ -14,7 +14,7 @@ import type {
   GitHubContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const DARK = '#0d1117';
@@ -325,7 +325,7 @@ function CoderMainContent({ section, resume }: { section: any; resume: Resume })
               <span className="text-xs text-zinc-400">{item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>
             </div>
             <p className="text-sm text-zinc-600">
-              {item.degree}{item.field ? ` in ${item.field}` : ''}
+              {degreeField(item.degree, item.field)}
               {item.location && <span className="text-zinc-400">, {item.location}</span>}
             </p>
             {item.gpa && <p className="text-xs text-zinc-500">GPA: {item.gpa}</p>}

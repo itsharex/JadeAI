@@ -13,7 +13,7 @@ import type {
   CustomContent,
   GitHubContent,
 } from '@/types/resume';
-import { isSectionEmpty, md } from '../utils';
+import { isSectionEmpty, md, degreeField } from '../utils';
 import { AvatarImage } from '../avatar-image';
 import { QrCodesPreview } from '../qr-codes-preview';
 
@@ -112,7 +112,7 @@ function SectionContent({ section, lang }: { section: any; lang?: string }) {
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="font-semibold text-zinc-800 text-sm">{item.degree} {item.field && `in ${item.field}`}</span>
+                <span className="font-semibold text-zinc-800 text-sm">{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-zinc-600"> - {item.institution}</span>}
                 {item.location && <span className="text-sm text-zinc-400"> , {item.location}</span>}
               </div>

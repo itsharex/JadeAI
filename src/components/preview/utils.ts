@@ -31,6 +31,12 @@ export function md(text: unknown): string {
   return html;
 }
 
+/** Join degree and field with separator */
+export function degreeField(degree: string, field: string | undefined): string {
+  if (!field) return degree;
+  return `${degree} - ${field}`;
+}
+
 export function isSectionEmpty(section: ResumeSection): boolean {
   const content = section.content as any;
 

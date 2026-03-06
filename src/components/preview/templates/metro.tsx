@@ -14,7 +14,7 @@ import type {
   GitHubContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const PRIMARY = '#1e293b';
@@ -51,6 +51,16 @@ export function MetroTemplate({ resume }: { resume: Resume }) {
                   {c}
                 </span>
               ))}
+              {pi.linkedin && (
+                <span className="px-2 py-0.5" style={{ backgroundColor: '#f8fafc', borderLeft: `2px solid ${AMBER}` }}>
+                  {pi.linkedin}
+                </span>
+              )}
+              {pi.github && (
+                <span className="px-2 py-0.5" style={{ backgroundColor: '#f8fafc', borderLeft: `2px solid ${AMBER}` }}>
+                  {pi.github}
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -132,7 +142,7 @@ function MetroSectionContent({ section, resume }: { section: any; resume: Resume
               <h3 className="text-sm font-bold" style={{ color: PRIMARY }}>{item.institution}</h3>
               <span className="text-xs text-zinc-400">{item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>
             </div>
-            <p className="text-sm text-zinc-600">{item.degree}{item.field ? ` in ${item.field}` : ''}</p>
+            <p className="text-sm text-zinc-600">{degreeField(item.degree, item.field)}</p>
             {item.gpa && <p className="text-xs text-zinc-500">GPA: {item.gpa}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">

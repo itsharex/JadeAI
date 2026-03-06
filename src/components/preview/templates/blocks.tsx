@@ -14,7 +14,7 @@ import type {
   GitHubContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const PRIMARY = '#37352f';
@@ -25,7 +25,7 @@ export function BlocksTemplate({ resume }: { resume: Resume }) {
   const personalInfo = resume.sections.find((s) => s.type === 'personal_info');
   const pi = (personalInfo?.content || {}) as PersonalInfoContent;
 
-  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website, pi.linkedin && `LinkedIn: ${pi.linkedin}`, pi.github && `GitHub: ${pi.github}`].filter(Boolean);
 
   return (
     <div className="mx-auto max-w-[210mm] bg-white shadow-lg" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -136,7 +136,7 @@ function BlocksSectionContent({ section, resume }: { section: any; resume: Resum
               <h3 className="text-sm font-semibold" style={{ color: PRIMARY }}>{item.institution}</h3>
               <span className="text-xs" style={{ color: '#9b9a97' }}>{item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>
             </div>
-            <p className="text-sm" style={{ color: '#787774' }}>{item.degree}{item.field ? ` in ${item.field}` : ''}{item.location ? ` , ${item.location}` : ''}</p>
+            <p className="text-sm" style={{ color: '#787774' }}>{degreeField(item.degree, item.field)}{item.location ? ` , ${item.location}` : ''}</p>
             {item.gpa && <p className="text-xs" style={{ color: '#9b9a97' }}>GPA: {item.gpa}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">

@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, CustomContent, GitHubContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const TEAL_800 = '#115e59';
@@ -44,6 +44,8 @@ export function MedicalTemplate({ resume }: { resume: Resume }) {
               {pi.wechat && <span>{pi.wechat}</span>}
               {pi.location && <span>{pi.location}</span>}
               {pi.website && <span>{pi.website}</span>}
+              {pi.linkedin && <span>LinkedIn: {pi.linkedin}</span>}
+              {pi.github && <span>GitHub: {pi.github}</span>}
             </div>
           </div>
         </div>
@@ -110,7 +112,7 @@ function MedicalSectionContent({ section, resume }: { section: any; resume: Resu
           <div key={item.id} className="rounded-lg border p-3" style={{ borderColor: TEAL_500, backgroundColor: TEAL_50 }}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-bold" style={{ color: TEAL_800 }}>{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-bold" style={{ color: TEAL_800 }}>{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-gray-600"> - {item.institution}</span>}
               </div>
               <span className="shrink-0 text-xs font-medium" style={{ color: TEAL_500 }}>{item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>

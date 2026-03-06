@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, CustomContent, GitHubContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { isSectionEmpty, md, degreeField } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const LEFT_TYPES = new Set(['skills', 'languages', 'certifications', 'custom']);
@@ -189,7 +189,7 @@ function CompactRightContent({ section, resume }: { section: any; resume: Resume
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-xs font-bold text-zinc-800">{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-xs font-bold text-zinc-800">{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-xs text-zinc-500"> — {item.institution}</span>}
                 {item.location && <span className="text-xs text-zinc-400">, {item.location}</span>}
               </div>

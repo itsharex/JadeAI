@@ -1,7 +1,7 @@
 'use client';
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, GitHubContent, CustomContent } from '@/types/resume';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { AvatarImage } from '../avatar-image';
 import { QrCodesPreview } from '../qr-codes-preview';
 
@@ -37,6 +37,8 @@ export function ExecutiveTemplate({ resume }: { resume: Resume }) {
               {pi.wechat && <span>{pi.wechat}</span>}
               {pi.location && <span>{pi.location}</span>}
               {pi.website && <span>{pi.website}</span>}
+              {pi.linkedin && <span className="break-all">{pi.linkedin}</span>}
+              {pi.github && <span className="break-all">{pi.github}</span>}
             </div>
           </div>
         </div>
@@ -99,7 +101,7 @@ function ExecutiveSectionContent({ section, resume }: { section: any; resume: Re
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-bold" style={{ color: CHARCOAL }}>{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-bold" style={{ color: CHARCOAL }}>{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-zinc-600"> — {item.institution}</span>}
               </div>
               <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>

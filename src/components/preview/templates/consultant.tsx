@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, CustomContent, GitHubContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const GRAY_700 = '#374151';
@@ -48,6 +48,8 @@ export function ConsultantTemplate({ resume }: { resume: Resume }) {
           {pi.wechat && <span>{pi.wechat}</span>}
           {pi.location && <span>{pi.location}</span>}
           {pi.website && <span>{pi.website}</span>}
+          {pi.linkedin && <span className="break-all">{pi.linkedin}</span>}
+          {pi.github && <span className="break-all">{pi.github}</span>}
         </div>
       </div>
 
@@ -113,7 +115,7 @@ function ConsultantSectionContent({ section, resume }: { section: any; resume: R
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-bold" style={{ color: GRAY_700 }}>{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-bold" style={{ color: GRAY_700 }}>{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-gray-500"> - {item.institution}</span>}
                 {item.location && <span className="text-sm text-gray-400">, {item.location}</span>}
               </div>

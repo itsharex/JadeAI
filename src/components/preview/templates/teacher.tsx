@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, GitHubContent, CustomContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const PRIMARY = '#9a3412';
@@ -45,6 +45,8 @@ export function TeacherTemplate({ resume }: { resume: Resume }) {
             {pi.wechat && <span>{pi.wechat}</span>}
             {pi.location && <span>{pi.location}</span>}
             {pi.website && <span>{pi.website}</span>}
+            {pi.linkedin && <span className="break-all">{pi.linkedin}</span>}
+            {pi.github && <span className="break-all">{pi.github}</span>}
           </div>
         </div>
       </div>
@@ -127,7 +129,7 @@ function TeacherSectionContent({ section, resume }: { section: any; resume: Resu
             <div className="flex items-baseline justify-between">
               <div>
                 <span className="text-sm font-bold" style={{ color: PRIMARY }}>
-                  {item.degree}{item.field ? ` in ${item.field}` : ''}
+                  {degreeField(item.degree, item.field)}
                 </span>
                 {item.institution && <span className="text-sm" style={{ color: MUTED }}> — {item.institution}</span>}
               </div>

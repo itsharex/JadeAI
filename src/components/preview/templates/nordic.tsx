@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, CustomContent, GitHubContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const SLATE_500 = '#64748b';
@@ -106,7 +106,7 @@ function NordicSectionContent({ section, resume }: { section: any; resume: Resum
           <div key={item.id} className="rounded-sm p-3" style={{ backgroundColor: SLATE_50 }}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-medium" style={{ color: SLATE_500 }}>{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-medium" style={{ color: SLATE_500 }}>{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm font-light" style={{ color: SLATE_400 }}> - {item.institution}</span>}
               </div>
               <span className="shrink-0 text-xs font-light" style={{ color: SLATE_400 }}>{item.startDate} - {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>

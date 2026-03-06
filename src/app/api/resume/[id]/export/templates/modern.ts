@@ -9,7 +9,7 @@ import type {
   CustomContent,
   GitHubContent,
 } from '@/types/resume';
-import { esc, md, getPersonalInfo, visibleSections, buildHighlights, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
+import { esc, md, degreeField, getPersonalInfo, visibleSections, buildHighlights, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
 
 function buildModernSectionContent(section: Section, lang: string = 'en'): string {
   const c = section.content as any;
@@ -26,7 +26,7 @@ function buildModernSectionContent(section: Section, lang: string = 'en'): strin
   if (section.type === 'education') {
     return `<div class="space-y-3">${((c as EducationContent).items || []).map((it: any) => `<div class="border-l-2 pl-4" style="border-color:#0f3460">
       <h3 class="text-sm font-semibold text-zinc-800">${esc(it.institution)}</h3>
-      <p class="text-sm text-zinc-600">${esc(it.degree)} ${it.field ? `- ${esc(it.field)}` : ''}</p>
+      <p class="text-sm text-zinc-600">${esc(degreeField(it.degree, it.field))}</p>
       <span class="text-xs text-zinc-400">${esc(it.startDate)} - ${esc(it.endDate) || (lang === 'zh' ? '至今' : 'Present')}</span>
       ${it.gpa ? `<p class="mt-0.5 text-xs text-zinc-500">GPA: ${esc(it.gpa)}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}

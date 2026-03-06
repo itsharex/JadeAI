@@ -14,7 +14,7 @@ import type {
   GitHubContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const PRIMARY = '#18181b';
@@ -25,7 +25,7 @@ export function CardTemplate({ resume }: { resume: Resume }) {
   const personalInfo = resume.sections.find((s) => s.type === 'personal_info');
   const pi = (personalInfo?.content || {}) as PersonalInfoContent;
 
-  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website, pi.linkedin, pi.github].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return (
     <div className="mx-auto max-w-[210mm] bg-white shadow-lg" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -42,11 +42,13 @@ export function CardTemplate({ resume }: { resume: Resume }) {
         )}
         <h1 className="text-2xl font-bold" style={{ color: PRIMARY }}>{pi.fullName || 'Your Name'}</h1>
         {pi.jobTitle && <p className="mt-1 text-sm font-medium" style={{ color: ACCENT }}>{pi.jobTitle}</p>}
-        {contacts.length > 0 && (
+        {(contacts.length > 0 || pi.linkedin || pi.github) && (
           <div className="mt-2 flex flex-wrap items-center justify-center gap-3 text-xs text-zinc-500">
             {contacts.map((c, i) => (
               <span key={i}>{c}</span>
             ))}
+            {pi.linkedin && <span>LinkedIn: {pi.linkedin}</span>}
+            {pi.github && <span>GitHub: {pi.github}</span>}
           </div>
         )}
       </div>
@@ -125,7 +127,7 @@ function CardSectionContent({ section, resume }: { section: any; resume: Resume 
               <span className="text-sm font-semibold" style={{ color: PRIMARY }}>{item.institution}</span>
               <span className="shrink-0 text-xs text-zinc-400">{item.startDate} – {item.endDate || (resume.language === 'zh' ? '至今' : 'Present')}</span>
             </div>
-            <p className="text-sm text-zinc-600">{item.degree}{item.field ? ` in ${item.field}` : ''}{item.location ? ` , ${item.location}` : ''}</p>
+            <p className="text-sm text-zinc-600">{degreeField(item.degree, item.field)}{item.location ? ` , ${item.location}` : ''}</p>
             {item.gpa && <p className="text-xs text-zinc-500">GPA: {item.gpa}</p>}
             {item.highlights?.length > 0 && (
               <ul className="mt-1 list-disc pl-4">

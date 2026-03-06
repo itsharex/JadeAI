@@ -14,7 +14,7 @@ import type {
   GitHubContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 export function BoldTemplate({ resume }: { resume: Resume }) {
@@ -117,7 +117,7 @@ function BoldSectionContent({ section, resume }: { section: any; resume: Resume 
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-base font-bold text-black">{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-base font-bold text-black">{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-zinc-500"> — {item.institution}</span>}
                 {item.location && <span className="text-sm text-zinc-400"> , {item.location}</span>}
               </div>

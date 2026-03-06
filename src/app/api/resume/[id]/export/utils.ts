@@ -24,6 +24,12 @@ export function safe(val: unknown): string {
   return val != null ? String(val) : '';
 }
 
+/** Join degree and field with separator */
+export function degreeField(degree: string, field: string | undefined): string {
+  if (!field) return degree;
+  return `${degree} - ${field}`;
+}
+
 /** Lightweight markdown → HTML for resume text fields (summary, descriptions, highlights).
  *  Supports: **bold**, `code`, line breaks, and "- item" lists. */
 export function md(text: unknown): string {

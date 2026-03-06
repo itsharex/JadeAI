@@ -14,7 +14,7 @@ import type {
   GitHubContent,
 } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const PRIMARY = '#1c1917';
@@ -115,7 +115,7 @@ function JapaneseSectionContent({ section, lang }: { section: any; lang?: string
         {((content as EducationContent).items || []).map((item: any) => (
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
-              <h3 className="text-sm font-normal" style={{ color: PRIMARY }}>{item.degree}{item.field ? ` in ${item.field}` : ''}</h3>
+              <h3 className="text-sm font-normal" style={{ color: PRIMARY }}>{degreeField(item.degree, item.field)}</h3>
               <span className="shrink-0 text-[10px] font-light" style={{ color: ACCENT }}>{item.startDate} &ndash; {item.endDate || (lang === 'zh' ? '至今' : 'Present')}</span>
             </div>
             {item.institution && <p className="mt-0.5 text-xs font-light" style={{ color: ACCENT }}>{item.institution}{item.location ? `, ${item.location}` : ''}</p>}

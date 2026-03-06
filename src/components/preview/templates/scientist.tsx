@@ -2,7 +2,7 @@
 
 import type { Resume, PersonalInfoContent, SummaryContent, WorkExperienceContent, EducationContent, SkillsContent, ProjectsContent, CertificationsContent, LanguagesContent, GitHubContent, CustomContent } from '@/types/resume';
 import { AvatarImage } from '../avatar-image';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
 const PRIMARY = '#0f172a';
@@ -46,6 +46,8 @@ export function ScientistTemplate({ resume }: { resume: Resume }) {
           {pi.wechat && <span>{pi.wechat}</span>}
           {pi.location && <span>{pi.location}</span>}
           {pi.website && <span>{pi.website}</span>}
+          {pi.linkedin && <span>{pi.linkedin}</span>}
+          {pi.github && <span>{pi.github}</span>}
         </div>
       </div>
 
@@ -127,7 +129,7 @@ function ScientistSectionContent({ section, resume }: { section: any; resume: Re
               <div>
                 <span className="text-xs font-bold" style={{ color: ACCENT }}>[{idx + 1}]</span>
                 <span className="ml-1.5 text-sm font-bold" style={{ color: PRIMARY }}>
-                  {item.degree}{item.field ? `, ${item.field}` : ''}
+                  {degreeField(item.degree, item.field)}
                 </span>
                 {item.institution && <span className="text-sm" style={{ color: MUTED }}>, {item.institution}</span>}
               </div>

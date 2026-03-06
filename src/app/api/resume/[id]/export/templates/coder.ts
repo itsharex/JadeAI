@@ -9,7 +9,7 @@ import type {
   CustomContent,
   GitHubContent,
 } from '@/types/resume';
-import { esc, md, getPersonalInfo, visibleSections, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
+import { esc, md, degreeField, getPersonalInfo, visibleSections, buildQrCodesHtml, type ResumeWithSections, type Section } from '../utils';
 
 const DARK = '#0d1117';
 const BLUE = '#58a6ff';
@@ -76,7 +76,7 @@ function buildCoderMainContent(section: Section, lang: string): string {
   if (section.type === 'education') {
     return `<div class="space-y-3">${((c as EducationContent).items || []).map((it: any) => `<div>
       <div class="flex items-baseline justify-between"><h3 class="text-sm font-bold" style="color:${DARK}">${esc(it.institution)}</h3><span class="text-xs text-zinc-400">${esc(it.startDate)} - ${esc(it.endDate) || (lang === 'zh' ? '至今' : 'Present')}</span></div>
-      <p class="text-sm text-zinc-600">${esc(it.degree)}${it.field ? ` in ${esc(it.field)}` : ''}${it.location ? `<span class="text-zinc-400">, ${esc(it.location)}</span>` : ''}</p>
+      <p class="text-sm text-zinc-600">${esc(degreeField(it.degree, it.field))}${it.location ? `<span class="text-zinc-400">, ${esc(it.location)}</span>` : ''}</p>
       ${it.gpa ? `<p class="text-xs text-zinc-500">GPA: ${esc(it.gpa)}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 space-y-0.5">${buildCoderHighlights(it.highlights)}</ul>` : ''}
     </div>`).join('')}</div>`;

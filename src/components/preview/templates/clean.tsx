@@ -13,7 +13,7 @@ import type {
   CustomContent,
   GitHubContent,
 } from '@/types/resume';
-import { isSectionEmpty, md } from '../utils';
+import { degreeField, isSectionEmpty, md } from '../utils';
 import { AvatarImage } from '../avatar-image';
 import { QrCodesPreview } from '../qr-codes-preview';
 
@@ -51,6 +51,8 @@ export function CleanTemplate({ resume }: { resume: Resume }) {
           {pi.wechat && <span>{pi.wechat}</span>}
           {pi.location && <span>{pi.location}</span>}
           {pi.website && <span>{pi.website}</span>}
+          {pi.linkedin && <span>LinkedIn: {pi.linkedin}</span>}
+          {pi.github && <span>GitHub: {pi.github}</span>}
         </div>
         <div className="mt-3 h-0.5 w-full rounded" style={{ background: `linear-gradient(90deg, ${BLUE}, ${TEAL})` }} />
       </div>
@@ -116,7 +118,7 @@ function CleanSectionContent({ section, resume }: { section: any; resume: Resume
           <div key={item.id}>
             <div className="flex items-baseline justify-between">
               <div>
-                <span className="text-sm font-bold text-zinc-800">{item.degree}{item.field ? ` in ${item.field}` : ''}</span>
+                <span className="text-sm font-bold text-zinc-800">{degreeField(item.degree, item.field)}</span>
                 {item.institution && <span className="text-sm text-zinc-500"> — {item.institution}</span>}
                 {item.location && <span className="text-sm text-zinc-400"> , {item.location}</span>}
               </div>
