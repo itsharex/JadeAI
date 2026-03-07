@@ -40,9 +40,13 @@ Build professional resumes with drag-and-drop editing, real-time AI optimization
 |:---:|:---:|
 | ![Multi-Format Export](images/多项导出.png) | ![Share Link](images/创建分享链接.png) |
 
-| Shared Resume Page |
+| Shared Resume Page | AI Professional Photo |
+|:---:|:---:|
+| ![Shared Resume Page](images/简历分享页.png) | ![AI Professional Photo](images/职业照生成.png) |
+
+| QR Code Section |
 |:---:|
-| ![Shared Resume Page](images/简历分享页.png) |
+| ![QR Code Section](images/二维码.png) |
 
 ## Features
 
