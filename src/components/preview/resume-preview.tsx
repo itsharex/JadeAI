@@ -159,40 +159,52 @@ function buildThemeCSS(scopeId: string, theme: ThemeConfig, template: string): s
 
   return `
     ${s} > div {
-      font-family: ${theme.fontFamily}, sans-serif !important;
+      font-family: ${theme.fontFamily}, 'Noto Sans SC', sans-serif !important;
       line-height: ${theme.lineSpacing} !important;
       ${needsPadding ? `padding-top: ${m.top}px !important; padding-right: ${m.right}px !important; padding-bottom: ${m.bottom}px !important; padding-left: ${m.left}px !important;` : ''}
+      --base-body-size: ${fs.body};
+      --base-h1-size: ${fs.h1};
+      --base-h2-size: ${fs.h2};
+      --base-h3-size: ${fs.h3};
+      --base-line-spacing: ${theme.lineSpacing};
+      --base-section-spacing: ${theme.sectionSpacing}px;
       --base-margin-top: ${m.top}px;
       --base-margin-right: ${m.right}px;
       --base-margin-bottom: ${m.bottom}px;
       --base-margin-left: ${m.left}px;
     }
-    ${s} p, ${s} li, ${s} span, ${s} td, ${s} a {
+    ${s} p, ${s} li, ${s} span, ${s} td, ${s} a, ${s} div {
       font-size: ${fs.body} !important;
       line-height: ${theme.lineSpacing} !important;
     }
     ${s} h1:not([style*="color"]) {
       color: ${theme.primaryColor} !important;
       font-size: ${fs.h1} !important;
+      line-height: ${theme.lineSpacing} !important;
     }
     ${s} h1[style*="color"] {
       font-size: ${fs.h1} !important;
+      line-height: ${theme.lineSpacing} !important;
     }
     ${s} h2:not([style*="color"]) {
       color: ${theme.primaryColor} !important;
       font-size: ${fs.h2} !important;
+      line-height: ${theme.lineSpacing} !important;
       border-color: ${theme.accentColor} !important;
     }
     ${s} h2[style*="color"] {
       font-size: ${fs.h2} !important;
+      line-height: ${theme.lineSpacing} !important;
       border-color: ${theme.accentColor} !important;
     }
     ${s} h3:not([style*="color"]) {
       color: ${theme.primaryColor} !important;
       font-size: ${fs.h3} !important;
+      line-height: ${theme.lineSpacing} !important;
     }
     ${s} h3[style*="color"] {
       font-size: ${fs.h3} !important;
+      line-height: ${theme.lineSpacing} !important;
     }
     ${s} [class*="border-b-2"],
     ${s} [class*="border-b-"] {
@@ -230,9 +242,16 @@ export function ResumePreview({ resume }: ResumePreviewProps) {
   const theme: ThemeConfig = { ...DEFAULT_THEME, ...(resume.themeConfig || {}) };
 
   return (
-    <div data-theme-scope={scopeId}>
-      <style dangerouslySetInnerHTML={{ __html: buildThemeCSS(scopeId, theme, resume.template) }} />
-      <Template resume={resume} />
-    </div>
+    <>
+      {/* Load the same Google Fonts used in PDF/HTML export so preview renders
+          with identical font metrics (Inter for Latin, Noto Sans SC for CJK). */}
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      <div data-theme-scope={scopeId}>
+        <style dangerouslySetInnerHTML={{ __html: buildThemeCSS(scopeId, theme, resume.template) }} />
+        <Template resume={resume} />
+      </div>
+    </>
   );
 }

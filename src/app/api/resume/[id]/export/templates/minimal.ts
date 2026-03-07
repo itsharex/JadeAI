@@ -88,8 +88,8 @@ export function buildMinimalHtml(resume: ResumeWithSections): string {
           <div class="mt-1 flex flex-wrap gap-3 text-sm text-zinc-500">
             ${pi.jobTitle ? `<span>${esc(pi.jobTitle)}</span>` : ''}
             ${pi.age ? `<span>${esc(pi.age)}</span>` : ''}
-            ${pi.gender ? `<span>${esc(pi.gender)}</span>` : ''}
             ${pi.politicalStatus ? `<span>${esc(pi.politicalStatus)}</span>` : ''}
+            ${pi.gender ? `<span>${esc(pi.gender)}</span>` : ''}
             ${pi.ethnicity ? `<span>${esc(pi.ethnicity)}</span>` : ''}
             ${pi.hometown ? `<span>${esc(pi.hometown)}</span>` : ''}
             ${pi.maritalStatus ? `<span>${esc(pi.maritalStatus)}</span>` : ''}
@@ -99,6 +99,8 @@ export function buildMinimalHtml(resume: ResumeWithSections): string {
             ${pi.phone ? `<span>${esc(pi.phone)}</span>` : ''}
             ${pi.wechat ? `<span>${esc(pi.wechat)}</span>` : ''}
             ${pi.location ? `<span>${esc(pi.location)}</span>` : ''}
+            ${pi.linkedin ? `<span>LinkedIn: ${esc(pi.linkedin)}</span>` : ''}
+            ${pi.github ? `<span>GitHub: ${esc(pi.github)}</span>` : ''}
           </div>
         </div>
       </div>

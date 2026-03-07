@@ -79,10 +79,10 @@ function buildModernSectionContent(section: Section, lang: string = 'en'): strin
 export function buildModernHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
-  return `<div class="mx-auto max-w-[210mm] overflow-hidden bg-white shadow-lg" style="font-family:Inter,sans-serif">
-    <div class="relative px-10 py-8 text-white" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)">
+  return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Inter,sans-serif">
+    <div class="relative overflow-hidden px-10 py-8 text-white" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)">
       <div class="absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-10" style="background:radial-gradient(circle,#e94560 0%,transparent 70%)"></div>
       <div class="absolute -bottom-6 right-20 h-24 w-24 rounded-full" style="opacity:0.08;background:radial-gradient(circle,#e94560 0%,transparent 70%)"></div>
       <div class="relative flex items-center gap-6">

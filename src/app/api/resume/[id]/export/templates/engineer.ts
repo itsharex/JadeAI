@@ -103,7 +103,7 @@ export function buildEngineerHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
   const lang = resume.language || 'en';
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Inter,sans-serif">
     <div class="px-8 py-6" style="background:linear-gradient(135deg,${PRIMARY} 0%,#334155 100%)">
@@ -116,6 +116,8 @@ export function buildEngineerHtml(resume: ResumeWithSections): string {
         <div class="shrink-0 text-right">
           <div class="space-y-0.5 text-xs" style="color:#94a3b8">
             ${contacts.map(ct => `<p>${esc(ct)}</p>`).join('')}
+            ${pi.linkedin ? `<p>LinkedIn: ${esc(pi.linkedin)}</p>` : ''}
+            ${pi.github ? `<p>GitHub: ${esc(pi.github)}</p>` : ''}
           </div>
         </div>
       </div>

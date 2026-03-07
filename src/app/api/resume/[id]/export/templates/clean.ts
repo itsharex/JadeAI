@@ -29,7 +29,7 @@ function buildCleanSectionContent(s: Section, lang: string): string {
     return `<div class="space-y-3">${(c.items || []).map((it: any) => `<div>
       <div class="flex items-baseline justify-between">
         <div><span class="text-sm font-bold text-zinc-800">${esc(degreeField(it.degree, it.field))}</span>${it.institution ? `<span class="text-sm text-zinc-500"> — ${esc(it.institution)}</span>` : ''}${it.location ? `<span class="text-sm text-zinc-400"> , ${esc(it.location)}</span>` : ''}</div>
-        <span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${esc(it.endDate || '')}</span>
+        <span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${esc(it.endDate) || (lang === 'zh' ? '至今' : 'Present')}</span>
       </div>
       ${it.gpa ? `<p class="text-sm text-zinc-500">GPA: ${esc(it.gpa)}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
@@ -98,7 +98,20 @@ function buildCleanSectionContent(s: Section, lang: string): string {
 export function buildCleanHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts: string[] = [];
+  if (pi.age) contacts.push(pi.age);
+  if (pi.politicalStatus) contacts.push(pi.politicalStatus);
+  if (pi.gender) contacts.push(pi.gender);
+  if (pi.ethnicity) contacts.push(pi.ethnicity);
+  if (pi.hometown) contacts.push(pi.hometown);
+  if (pi.maritalStatus) contacts.push(pi.maritalStatus);
+  if (pi.yearsOfExperience) contacts.push(pi.yearsOfExperience);
+  if (pi.educationLevel) contacts.push(pi.educationLevel);
+  if (pi.email) contacts.push(pi.email);
+  if (pi.phone) contacts.push(pi.phone);
+  if (pi.wechat) contacts.push(pi.wechat);
+  if (pi.location) contacts.push(pi.location);
+  if (pi.website) contacts.push(pi.website);
   const BL = '#0066cc';
   const TL = '#0d9488';
 
@@ -111,7 +124,7 @@ export function buildCleanHtml(resume: ResumeWithSections): string {
           ${pi.jobTitle ? `<p class="mt-0.5 text-base" style="color:${TL}">${esc(pi.jobTitle)}</p>` : ''}
         </div>
       </div>
-      ${contacts.length ? `<div class="mt-3 flex flex-wrap gap-4 text-sm text-zinc-500">${contacts.map(c => `<span>${esc(c)}</span>`).join('')}</div>` : ''}
+      ${contacts.length || pi.linkedin || pi.github ? `<div class="mt-3 flex flex-wrap gap-4 text-sm text-zinc-500">${contacts.map(c => `<span>${esc(c)}</span>`).join('')}${pi.linkedin ? `<span>LinkedIn: ${esc(pi.linkedin)}</span>` : ''}${pi.github ? `<span>GitHub: ${esc(pi.github)}</span>` : ''}</div>` : ''}
       <div class="mt-3 h-0.5 w-full rounded" style="background:linear-gradient(90deg,${BL},${TL})"></div>
     </div>
     ${sections.map(s => `<div class="mb-5" data-section>

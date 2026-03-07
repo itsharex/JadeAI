@@ -94,7 +94,7 @@ function buildMedicalSectionContent(section: Section, lang: string): string {
 export function buildMedicalHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Inter,sans-serif">
     <div class="mb-6 border-b-2 pb-5" style="border-color:${TEAL_500}">
@@ -103,7 +103,7 @@ export function buildMedicalHtml(resume: ResumeWithSections): string {
         <div class="flex-1">
           <h1 class="text-2xl font-bold" style="color:${TEAL_800}">${esc(pi.fullName || 'Your Name')}</h1>
           ${pi.jobTitle ? `<p class="mt-1 text-sm font-medium" style="color:${TEAL_500}">${esc(pi.jobTitle)}</p>` : ''}
-          ${contacts.length ? `<div class="mt-2 flex flex-wrap gap-4 text-sm text-gray-500">${contacts.map(ct => `<span>${esc(ct)}</span>`).join('')}</div>` : ''}
+          ${contacts.length || pi.linkedin || pi.github ? `<div class="mt-2 flex flex-wrap gap-4 text-sm text-gray-500">${contacts.map(ct => `<span>${esc(ct)}</span>`).join('')}${pi.linkedin ? `<span>LinkedIn: ${esc(pi.linkedin)}</span>` : ''}${pi.github ? `<span>GitHub: ${esc(pi.github)}</span>` : ''}</div>` : ''}
         </div>
       </div>
     </div>

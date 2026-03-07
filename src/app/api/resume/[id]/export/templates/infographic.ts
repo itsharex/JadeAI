@@ -80,7 +80,7 @@ function buildInfographicSectionContent(section: Section, color: string, colorIn
 export function buildInfographicHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
   const COLORS = ['#3b82f6', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899'];
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Inter,sans-serif">
@@ -90,7 +90,7 @@ export function buildInfographicHtml(resume: ResumeWithSections): string {
         <div>
           <h1 class="text-3xl font-bold text-white">${esc(pi.fullName || 'Your Name')}</h1>
           ${pi.jobTitle ? `<p class="mt-1 text-base text-white/70">${esc(pi.jobTitle)}</p>` : ''}
-          ${contacts.length ? `<div class="mt-2 flex flex-wrap gap-3 text-sm text-white/60">${contacts.map(c => `<span>${esc(c)}</span>`).join('')}</div>` : ''}
+          ${contacts.length || pi.linkedin || pi.github ? `<div class="mt-2 flex flex-wrap gap-3 text-sm text-white/60">${contacts.map(c => `<span>${esc(c)}</span>`).join('')}${pi.linkedin ? `<span class="break-all">${esc(pi.linkedin)}</span>` : ''}${pi.github ? `<span class="break-all">${esc(pi.github)}</span>` : ''}</div>` : ''}
         </div>
       </div>
     </div>

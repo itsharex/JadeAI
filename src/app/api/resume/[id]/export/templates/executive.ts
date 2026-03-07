@@ -77,7 +77,7 @@ function buildExecutiveSectionContent(section: Section, lang: string): string {
 export function buildExecutiveHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
   const CHARCOAL = '#2d3436';
   const EMERALD = '#00b894';
 
@@ -88,7 +88,7 @@ export function buildExecutiveHtml(resume: ResumeWithSections): string {
         <div class="flex-1">
           <h1 class="text-3xl font-bold tracking-tight text-white">${esc(pi.fullName || 'Your Name')}</h1>
           ${pi.jobTitle ? `<p class="mt-1 text-base font-light" style="color:${EMERALD}">${esc(pi.jobTitle)}</p>` : ''}
-          ${contacts.length ? `<div class="mt-2 flex flex-wrap gap-3 text-sm text-zinc-400">${contacts.map(c => `<span>${esc(c)}</span>`).join('')}</div>` : ''}
+          ${contacts.length || pi.linkedin || pi.github ? `<div class="mt-2 flex flex-wrap gap-3 text-sm text-zinc-400">${contacts.map(c => `<span>${esc(c)}</span>`).join('')}${pi.linkedin ? `<span class="break-all">${esc(pi.linkedin)}</span>` : ''}${pi.github ? `<span class="break-all">${esc(pi.github)}</span>` : ''}</div>` : ''}
         </div>
       </div>
     </div>

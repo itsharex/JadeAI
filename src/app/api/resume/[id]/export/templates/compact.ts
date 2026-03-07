@@ -99,8 +99,8 @@ export function buildCompactHtml(resume: ResumeWithSections): string {
   const contactParts: string[] = [];
   if (pi.jobTitle) contactParts.push(`<span class="font-medium text-zinc-700">${esc(pi.jobTitle)}</span>`);
   if (pi.age) { contactParts.push(`<span class="text-zinc-300">|</span>`); contactParts.push(`<span>${esc(pi.age)}</span>`); }
-  if (pi.gender) { contactParts.push(`<span class="text-zinc-300">|</span>`); contactParts.push(`<span>${esc(pi.gender)}</span>`); }
   if (pi.politicalStatus) { contactParts.push(`<span class="text-zinc-300">|</span>`); contactParts.push(`<span>${esc(pi.politicalStatus)}</span>`); }
+  if (pi.gender) { contactParts.push(`<span class="text-zinc-300">|</span>`); contactParts.push(`<span>${esc(pi.gender)}</span>`); }
   if (pi.ethnicity) { contactParts.push(`<span class="text-zinc-300">|</span>`); contactParts.push(`<span>${esc(pi.ethnicity)}</span>`); }
   if (pi.hometown) { contactParts.push(`<span class="text-zinc-300">|</span>`); contactParts.push(`<span>${esc(pi.hometown)}</span>`); }
   if (pi.maritalStatus) { contactParts.push(`<span class="text-zinc-300">|</span>`); contactParts.push(`<span>${esc(pi.maritalStatus)}</span>`); }

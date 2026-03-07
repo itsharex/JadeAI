@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useEffect } from 'react';
+import { toast } from 'sonner';
 import { useEditor } from '@/hooks/use-editor';
 import { useFingerprint } from '@/hooks/use-fingerprint';
 import { EditorToolbar } from '@/components/editor/editor-toolbar';
@@ -44,6 +45,24 @@ export default function EditorPage({ params }: { params: Promise<{ id: string }>
   useEffect(() => {
     if (!_hydrated) hydrate();
   }, [_hydrated, hydrate]);
+
+  // Catch unhandled promise rejections (e.g. "Failed to find Server Action")
+  // to prevent page crash — show toast instead
+  useEffect(() => {
+    const handler = (e: PromiseRejectionEvent) => {
+      const msg = e.reason?.message || String(e.reason || '');
+      if (msg.includes('Server Action') || msg.includes('AI_RetryError') || msg.includes('AI_APICallError')) {
+        e.preventDefault();
+        toast.error('操作失败', {
+          description: msg.includes('Server Action')
+            ? '页面版本已更新，请刷新页面重试'
+            : 'AI 服务暂时不可用，请稍后重试',
+        });
+      }
+    };
+    window.addEventListener('unhandledrejection', handler);
+    return () => window.removeEventListener('unhandledrejection', handler);
+  }, []);
 
   useEffect(() => {
     if (!resume) return;

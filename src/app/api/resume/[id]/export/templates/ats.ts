@@ -76,7 +76,7 @@ export function buildAtsHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
   const lang = resume.language || 'en';
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website, pi.linkedin, pi.github].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Arial,Helvetica,sans-serif">
     <div class="mb-4 ${pi.avatar ? 'flex items-center gap-4' : 'text-center'}">
@@ -85,6 +85,7 @@ export function buildAtsHtml(resume: ResumeWithSections): string {
         <h1 class="text-2xl font-bold text-black">${esc(pi.fullName || 'Your Name')}</h1>
         ${pi.jobTitle ? `<p class="mt-0.5 text-base text-zinc-700">${esc(pi.jobTitle)}</p>` : ''}
         ${contacts.length ? `<p class="mt-1 text-sm text-zinc-600">${contacts.map(c => esc(c)).join(' | ')}</p>` : ''}
+        ${pi.linkedin || pi.github ? `<p class="mt-0.5 text-sm text-zinc-700">${[pi.linkedin ? `LinkedIn: ${esc(pi.linkedin)}` : '', pi.github ? `GitHub: ${esc(pi.github)}` : ''].filter(Boolean).join(' | ')}</p>` : ''}
       </div>
     </div>
     <hr class="mb-4 border-black"/>

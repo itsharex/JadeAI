@@ -29,7 +29,7 @@ function buildEuroSectionContent(s: Section, lang: string): string {
     return `<div class="space-y-3">${(c.items || []).map((it: any) => `<div>
       <div class="flex items-baseline justify-between">
         <div><span class="text-sm font-bold text-zinc-800">${esc(degreeField(it.degree, it.field))}</span>${it.institution ? `<span class="text-sm text-zinc-500"> — ${esc(it.institution)}</span>` : ''}</div>
-        <span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${esc(it.endDate || '')}</span>
+        <span class="shrink-0 text-xs text-zinc-400">${esc(it.startDate)} – ${esc(it.endDate) || (lang === 'zh' ? '至今' : 'Present')}</span>
       </div>
       ${it.gpa ? `<p class="text-sm text-zinc-500">GPA: ${esc(it.gpa)}</p>` : ''}
       ${it.highlights?.length ? `<ul class="mt-1 list-disc pl-4">${buildHighlights(it.highlights, 'text-sm text-zinc-600')}</ul>` : ''}
@@ -101,18 +101,20 @@ export function buildEuroHtml(resume: ResumeWithSections): string {
         ${pi.jobTitle ? `<p class="mt-1 text-base text-zinc-500">${esc(pi.jobTitle)}</p>` : ''}
         <div class="mt-3 space-y-0.5 text-sm text-zinc-600">
           ${pi.age ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Age</span>${esc(pi.age)}</div>` : ''}
-          ${pi.gender ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Gender</span>${esc(pi.gender)}</div>` : ''}
           ${pi.politicalStatus ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Political</span>${esc(pi.politicalStatus)}</div>` : ''}
+          ${pi.gender ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Gender</span>${esc(pi.gender)}</div>` : ''}
           ${pi.ethnicity ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Ethnicity</span>${esc(pi.ethnicity)}</div>` : ''}
           ${pi.hometown ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Hometown</span>${esc(pi.hometown)}</div>` : ''}
           ${pi.maritalStatus ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Marital</span>${esc(pi.maritalStatus)}</div>` : ''}
-          ${pi.yearsOfExperience ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Exp.</span>${esc(pi.yearsOfExperience)}</div>` : ''}
-          ${pi.educationLevel ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Edu.</span>${esc(pi.educationLevel)}</div>` : ''}
+          ${pi.yearsOfExperience ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Experience</span>${esc(pi.yearsOfExperience)}</div>` : ''}
+          ${pi.educationLevel ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Education</span>${esc(pi.educationLevel)}</div>` : ''}
           ${pi.email ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Email</span>${esc(pi.email)}</div>` : ''}
           ${pi.phone ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Phone</span>${esc(pi.phone)}</div>` : ''}
           ${pi.wechat ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">WeChat</span>${esc(pi.wechat)}</div>` : ''}
           ${pi.location ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Address</span>${esc(pi.location)}</div>` : ''}
           ${pi.website ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">Website</span>${esc(pi.website)}</div>` : ''}
+          ${pi.linkedin ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">LinkedIn</span>${esc(pi.linkedin)}</div>` : ''}
+          ${pi.github ? `<div><span class="inline-block w-20 text-xs font-semibold uppercase text-zinc-400">GitHub</span>${esc(pi.github)}</div>` : ''}
         </div>
       </div>
       ${pi.avatar ? `<img src="${esc(pi.avatar)}" alt="" class="h-28 shrink-0 rounded border-2 object-cover" style="width:5.5rem;border-color:${BL}"/>` : ''}

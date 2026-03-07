@@ -156,8 +156,8 @@ export function buildCoderHtml(resume: ResumeWithSections): string {
       </div>
       <div class="mb-5 space-y-1.5 text-[11px]" style="border-top:1px solid ${BORDER};padding-top:12px">
         ${pi.age ? `<div class="flex items-start gap-2"><span style="color:${GREEN}">$</span><span style="color:#8b949e">${esc(pi.age)}</span></div>` : ''}
-        ${pi.gender ? `<div class="flex items-start gap-2"><span style="color:${GREEN}">$</span><span style="color:#8b949e">${esc(pi.gender)}</span></div>` : ''}
         ${pi.politicalStatus ? `<div class="flex items-start gap-2"><span style="color:${GREEN}">$</span><span style="color:#8b949e">${esc(pi.politicalStatus)}</span></div>` : ''}
+        ${pi.gender ? `<div class="flex items-start gap-2"><span style="color:${GREEN}">$</span><span style="color:#8b949e">${esc(pi.gender)}</span></div>` : ''}
         ${pi.ethnicity ? `<div class="flex items-start gap-2"><span style="color:${GREEN}">$</span><span style="color:#8b949e">${esc(pi.ethnicity)}</span></div>` : ''}
         ${pi.hometown ? `<div class="flex items-start gap-2"><span style="color:${GREEN}">$</span><span style="color:#8b949e">${esc(pi.hometown)}</span></div>` : ''}
         ${pi.maritalStatus ? `<div class="flex items-start gap-2"><span style="color:${GREEN}">$</span><span style="color:#8b949e">${esc(pi.maritalStatus)}</span></div>` : ''}

@@ -108,12 +108,12 @@ function buildSwissSectionContent(section: Section, lang: string): string {
 export function buildSwissHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Helvetica Neue,Helvetica,Arial,sans-serif">
     <div class="mb-8">
       <div class="flex items-start gap-6">
-        ${pi.avatar ? `<img src="${esc(pi.avatar)}" alt="" class="h-16 w-16 shrink-0 object-cover grayscale"/>` : ''}
+        ${pi.avatar ? `<img src="${esc(pi.avatar)}" alt="" class="h-16 w-16 shrink-0 object-cover"/>` : ''}
         <div class="flex-1">
           <h1 class="text-3xl font-bold uppercase tracking-tight" style="color:${TEXT}">${esc(pi.fullName || 'Your Name')}</h1>
           ${pi.jobTitle ? `<p class="mt-1 text-sm font-light uppercase tracking-[0.15em]" style="color:#71717a">${esc(pi.jobTitle)}</p>` : ''}

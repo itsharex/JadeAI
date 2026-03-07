@@ -96,7 +96,7 @@ function buildMetroSectionContent(section: Section, lang: string): string {
 export function buildMetroHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Inter,sans-serif">
     <div class="mb-6 flex items-center gap-5">
@@ -104,7 +104,7 @@ export function buildMetroHtml(resume: ResumeWithSections): string {
       <div class="min-w-0 flex-1">
         <h1 class="text-2xl font-extrabold uppercase tracking-tight" style="color:${PRIMARY}">${esc(pi.fullName || 'Your Name')}</h1>
         ${pi.jobTitle ? `<p class="mt-0.5 text-sm font-semibold" style="color:${AMBER}">${esc(pi.jobTitle)}</p>` : ''}
-        ${contacts.length ? `<div class="mt-2 flex flex-wrap gap-2 text-xs text-zinc-500">${contacts.map(c => `<span class="px-2 py-0.5" style="background-color:#f8fafc;border-left:2px solid ${AMBER}">${esc(c)}</span>`).join('')}</div>` : ''}
+        ${contacts.length ? `<div class="mt-2 flex flex-wrap gap-2 text-xs text-zinc-500">${contacts.map(c => `<span class="px-2 py-0.5" style="background-color:#f8fafc;border-left:2px solid ${AMBER}">${esc(c)}</span>`).join('')}${pi.linkedin ? `<span class="px-2 py-0.5" style="background-color:#f8fafc;border-left:2px solid ${AMBER}">${esc(pi.linkedin)}</span>` : ''}${pi.github ? `<span class="px-2 py-0.5" style="background-color:#f8fafc;border-left:2px solid ${AMBER}">${esc(pi.github)}</span>` : ''}</div>` : ''}
       </div>
     </div>
     <div class="mb-6 h-1" style="background-color:${PRIMARY}"></div>

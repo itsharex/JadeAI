@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "build:export-css": "tsx scripts/build-export-css.ts",
+    "prebuild": "pnpm build:export-css",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

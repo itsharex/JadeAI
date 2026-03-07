@@ -98,7 +98,7 @@ function buildTeacherSectionContent(section: Section, lang: string = 'en'): stri
 export function buildTeacherHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Inter,sans-serif">
     <div class="mb-6 flex items-center gap-5">
@@ -106,7 +106,7 @@ export function buildTeacherHtml(resume: ResumeWithSections): string {
       <div class="flex-1">
         <h1 class="text-2xl font-bold" style="color:${PRIMARY}">${esc(pi.fullName || 'Your Name')}</h1>
         ${pi.jobTitle ? `<p class="mt-1 inline-block rounded-full px-3 py-0.5 text-sm font-medium text-white" style="background-color:${ACCENT}">${esc(pi.jobTitle)}</p>` : ''}
-        ${contacts.length ? `<div class="mt-2 flex flex-wrap gap-3 text-xs" style="color:${MUTED}">${contacts.map(ct => `<span>${esc(ct)}</span>`).join('')}</div>` : ''}
+        ${contacts.length || pi.linkedin || pi.github ? `<div class="mt-2 flex flex-wrap gap-3 text-xs" style="color:${MUTED}">${contacts.map(ct => `<span>${esc(ct)}</span>`).join('')}${pi.linkedin ? `<span class="break-all">${esc(pi.linkedin)}</span>` : ''}${pi.github ? `<span class="break-all">${esc(pi.github)}</span>` : ''}</div>` : ''}
       </div>
     </div>
     <div class="mb-6 h-0.5 w-full rounded-full" style="background-color:${ACCENT};opacity:0.3"></div>

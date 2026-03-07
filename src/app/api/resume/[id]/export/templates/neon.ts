@@ -102,7 +102,7 @@ function buildNeonSectionContent(section: Section, lang: string): string {
 export function buildNeonHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website, pi.linkedin, pi.github].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] overflow-hidden shadow-lg" style="font-family:Inter,sans-serif;background-color:${BG}">
     <div class="relative px-10 py-8" style="border-bottom:2px solid ${CYAN};box-shadow:0 2px 20px ${CYAN}40">

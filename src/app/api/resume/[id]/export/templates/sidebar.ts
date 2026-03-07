@@ -126,8 +126,8 @@ export function buildSidebarHtml(resume: ResumeWithSections): string {
       </div>
       <div class="mb-6 space-y-1.5 text-xs">
         ${pi.age ? `<div class="flex items-start gap-2 text-blue-100"><span class="shrink-0 text-blue-300">Age:</span><span>${esc(pi.age)}</span></div>` : ''}
-        ${pi.gender ? `<div class="flex items-start gap-2 text-blue-100"><span class="shrink-0 text-blue-300">Gender:</span><span>${esc(pi.gender)}</span></div>` : ''}
         ${pi.politicalStatus ? `<div class="flex items-start gap-2 text-blue-100"><span class="shrink-0 text-blue-300">Political:</span><span>${esc(pi.politicalStatus)}</span></div>` : ''}
+        ${pi.gender ? `<div class="flex items-start gap-2 text-blue-100"><span class="shrink-0 text-blue-300">Gender:</span><span>${esc(pi.gender)}</span></div>` : ''}
         ${pi.ethnicity ? `<div class="flex items-start gap-2 text-blue-100"><span class="shrink-0 text-blue-300">Ethnicity:</span><span>${esc(pi.ethnicity)}</span></div>` : ''}
         ${pi.hometown ? `<div class="flex items-start gap-2 text-blue-100"><span class="shrink-0 text-blue-300">Hometown:</span><span>${esc(pi.hometown)}</span></div>` : ''}
         ${pi.maritalStatus ? `<div class="flex items-start gap-2 text-blue-100"><span class="shrink-0 text-blue-300">Marital:</span><span>${esc(pi.maritalStatus)}</span></div>` : ''}

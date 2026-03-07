@@ -4,6 +4,7 @@ import type { UIMessage } from 'ai';
 import { useTranslations } from 'next-intl';
 import { X, Sparkles, Plus, Trash2, Clock, MessageSquare } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useEditorStore } from '@/stores/editor-store';
@@ -172,12 +173,29 @@ export function AIChatContent({ resumeId, hideTitle }: AIChatContentProps) {
     }
   }, [activeSessionId, sessions, loadInitial, createNewSession]);
 
-  const { messages: chatMessages, input, handleInputChange, handleSubmit: originalHandleSubmit, isLoading, status, sendMessage } = useAIChat({
+  const { messages: chatMessages, input, handleInputChange, handleSubmit: originalHandleSubmit, isLoading, status, error: chatError, sendMessage } = useAIChat({
     resumeId,
     sessionId: activeSessionId,
     initialMessages,
     selectedModel,
   });
+
+  // Show toast when AI API call fails
+  const lastErrorRef = useRef<Error | null>(null);
+  useEffect(() => {
+    if (chatError && chatError !== lastErrorRef.current) {
+      lastErrorRef.current = chatError;
+      const msg = chatError.message || t('errorMessage');
+      // Show a user-friendly message for common errors
+      if (msg.includes('ETIMEDOUT') || msg.includes('Cannot connect')) {
+        toast.error(t('errorMessage'), { description: 'API 连接超时，请检查网络或 API 配置' });
+      } else if (msg.includes('No tool call found')) {
+        toast.error(t('errorMessage'), { description: 'AI 模型返回了无效的工具调用，请重试' });
+      } else {
+        toast.error(t('errorMessage'), { description: msg.length > 200 ? msg.slice(0, 200) + '...' : msg });
+      }
+    }
+  }, [chatError, t]);
 
   // Handle pending AI message from other components (e.g. grammar check one-click fix)
   const pendingAiMessage = useEditorStore((s) => s.pendingAiMessage);
@@ -336,6 +354,11 @@ export function AIChatContent({ resumeId, hideTitle }: AIChatContentProps) {
                 <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-pink-400 [animation-delay:300ms]" />
               </span>
               {t('thinking')}
+            </div>
+          )}
+          {chatError && status !== 'streaming' && status !== 'submitted' && (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-[12px] text-red-600">
+              {t('errorMessage')}
             </div>
           )}
         </div>

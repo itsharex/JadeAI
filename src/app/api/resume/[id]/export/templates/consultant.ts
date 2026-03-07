@@ -93,7 +93,7 @@ function buildConsultantSectionContent(section: Section, lang: string): string {
 export function buildConsultantHtml(resume: ResumeWithSections): string {
   const pi = getPersonalInfo(resume);
   const sections = visibleSections(resume);
-  const contacts = [pi.age, pi.gender, pi.politicalStatus, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
+  const contacts = [pi.age, pi.politicalStatus, pi.gender, pi.ethnicity, pi.hometown, pi.maritalStatus, pi.yearsOfExperience, pi.educationLevel, pi.email, pi.phone, pi.wechat, pi.location, pi.website].filter(Boolean);
 
   return `<div class="mx-auto max-w-[210mm] bg-white shadow-lg" style="font-family:Inter,sans-serif">
     <div class="mb-6 h-1 w-full rounded" style="background-color:${BLUE_600}"></div>
@@ -105,7 +105,7 @@ export function buildConsultantHtml(resume: ResumeWithSections): string {
           ${pi.jobTitle ? `<p class="mt-0.5 text-sm font-medium" style="color:${BLUE_600}">${esc(pi.jobTitle)}</p>` : ''}
         </div>
       </div>
-      ${contacts.length ? `<div class="mt-3 flex flex-wrap items-center gap-4 text-sm text-gray-500">${contacts.map(ct => `<span>${esc(ct)}</span>`).join('')}</div>` : ''}
+      ${contacts.length || pi.linkedin || pi.github ? `<div class="mt-3 flex flex-wrap items-center gap-4 text-sm text-gray-500">${contacts.map(ct => `<span>${esc(ct)}</span>`).join('')}${pi.linkedin ? `<span class="break-all">${esc(pi.linkedin)}</span>` : ''}${pi.github ? `<span class="break-all">${esc(pi.github)}</span>` : ''}</div>` : ''}
     </div>
     ${sections.map(s => `<div class="mb-6" data-section>
       <h2 class="mb-3 border-l-[3px] pl-3 text-sm font-bold uppercase tracking-wider" style="color:${GRAY_700};border-color:${BLUE_600}">${esc(s.title)}</h2>
