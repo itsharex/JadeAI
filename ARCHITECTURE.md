@@ -483,7 +483,7 @@ AI 可以调用工具直接修改简历内容：
 // 通过环境变量控制的功能开关
 export const config = {
   auth: {
-    enabled: process.env.NEXT_PUBLIC_AUTH_ENABLED === 'true',
+    enabled: process.env.AUTH_ENABLED === 'true',
     providers: ['google'],  // 可扩展
   },
   db: {
@@ -1744,11 +1744,10 @@ resume-store.updateSection(sectionId, newData)
 # .env.example
 
 # ===== 应用 =====
-NEXT_PUBLIC_APP_NAME=JadeAI
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+APP_NAME=JadeAI
 
 # ===== 认证 =====
-NEXT_PUBLIC_AUTH_ENABLED=true           # 设为 'false' 使用浏览器指纹模式
+AUTH_ENABLED=true           # 设为 'false' 使用浏览器指纹模式
 AUTH_SECRET=your-auth-secret-key        # NextAuth 密钥
 
 # Google OAuth
@@ -1771,7 +1770,7 @@ OPENAI_API_KEY=sk-...
 ANTHROPIC_API_KEY=sk-ant-...
 
 # ===== 国际化 =====
-NEXT_PUBLIC_DEFAULT_LOCALE=zh            # 默认语言：'zh' 或 'en'
+DEFAULT_LOCALE=zh            # 默认语言：'zh' 或 'en'
 ```
 
 ---

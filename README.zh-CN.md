@@ -208,7 +208,7 @@ docker run -d -p 3000:3000 \
 
 ```bash
 docker run -d -p 3000:3000 \
-  -e NEXT_PUBLIC_AUTH_ENABLED=true \
+  -e AUTH_ENABLED=true \
   -e AUTH_SECRET=your-secret \
   -e GOOGLE_CLIENT_ID=xxx \
   -e GOOGLE_CLIENT_SECRET=xxx \
@@ -244,7 +244,7 @@ cp .env.example .env.local
 DB_TYPE=sqlite
 
 # 认证（默认指纹模式，无需额外配置）
-NEXT_PUBLIC_AUTH_ENABLED=false
+AUTH_ENABLED=false
 ```
 
 > **AI 配置：** 无需服务端环境变量。每位用户在应用内的 **设置 > AI** 中自行配置 API Key、Base URL 和模型。
@@ -275,12 +275,11 @@ pnpm dev
 | `DB_TYPE` | 否 | `sqlite` | 数据库类型：`sqlite` 或 `postgresql` |
 | `DATABASE_URL` | PostgreSQL 时 | — | PostgreSQL 连接字符串 |
 | `SQLITE_PATH` | 否 | `./data/jade.db` | SQLite 数据库文件路径 |
-| `NEXT_PUBLIC_AUTH_ENABLED` | 否 | `false` | 启用 Google OAuth（`true`）或使用指纹模式（`false`） |
+| `AUTH_ENABLED` | 否 | `false` | 启用 Google OAuth（`true`）或使用指纹模式（`false`） |
 | `GOOGLE_CLIENT_ID` | OAuth 时 | — | Google OAuth 客户端 ID |
 | `GOOGLE_CLIENT_SECRET` | OAuth 时 | — | Google OAuth 客户端密钥 |
-| `NEXT_PUBLIC_APP_NAME` | 否 | `JadeAI` | 应用显示名称 |
-| `NEXT_PUBLIC_APP_URL` | 否 | `http://localhost:3000` | 应用 URL |
-| `NEXT_PUBLIC_DEFAULT_LOCALE` | 否 | `zh` | 默认语言：`zh` 或 `en` |
+| `APP_NAME` | 否 | `JadeAI` | 应用显示名称 |
+| `DEFAULT_LOCALE` | 否 | `zh` | 默认语言：`zh` 或 `en` |
 
 ## 常用命令
 
@@ -449,7 +448,7 @@ JadeAI 不需要在服务端配置 AI API 密钥。每位用户在应用内的 *
 <details>
 <summary><b>不使用 OAuth 时认证如何工作？</b></summary>
 
-当 `NEXT_PUBLIC_AUTH_ENABLED=false`（默认）时，JadeAI 使用 FingerprintJS 进行浏览器指纹识别。系统为每个浏览器生成唯一的指纹 ID 作为用户标识。无需登录界面 — 用户可以直接开始创建简历。
+当 `AUTH_ENABLED=false`（默认）时，JadeAI 使用 FingerprintJS 进行浏览器指纹识别。系统为每个浏览器生成唯一的指纹 ID 作为用户标识。无需登录界面 — 用户可以直接开始创建简历。
 
 </details>
 

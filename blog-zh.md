@@ -212,7 +212,7 @@ docker run -d -p 3000:3000 \
 -e DB_TYPE=postgresql -e DATABASE_URL=postgresql://user:pass@host:5432/jadeai
 
 # Google OAuth
--e NEXT_PUBLIC_AUTH_ENABLED=true -e GOOGLE_CLIENT_ID=xxx -e GOOGLE_CLIENT_SECRET=xxx
+-e AUTH_ENABLED=true -e GOOGLE_CLIENT_ID=xxx -e GOOGLE_CLIENT_SECRET=xxx
 ```
 
 ### 本地开发

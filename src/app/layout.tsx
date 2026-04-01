@@ -4,8 +4,10 @@ import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
+const appName = process.env.APP_NAME || 'JadeAI';
+
 export const metadata: Metadata = {
-  title: 'JadeAI - AI Resume Builder',
+  title: `${appName} - AI Resume Builder`,
   description: 'AI-powered intelligent resume builder with drag-and-drop editor',
   icons: {
     icon: '/favicon.svg',

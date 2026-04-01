@@ -208,7 +208,7 @@ docker run -d -p 3000:3000 \
 
 ```bash
 docker run -d -p 3000:3000 \
-  -e NEXT_PUBLIC_AUTH_ENABLED=true \
+  -e AUTH_ENABLED=true \
   -e AUTH_SECRET=your-secret \
   -e GOOGLE_CLIENT_ID=xxx \
   -e GOOGLE_CLIENT_SECRET=xxx \
@@ -244,7 +244,7 @@ Edit `.env.local`:
 DB_TYPE=sqlite
 
 # Auth (defaults to fingerprint mode, no config needed)
-NEXT_PUBLIC_AUTH_ENABLED=false
+AUTH_ENABLED=false
 ```
 
 > **AI Configuration:** No server-side env vars needed. Each user configures their own API Key, Base URL, and Model in **Settings > AI** within the app.
@@ -275,12 +275,11 @@ Open [http://localhost:3000](http://localhost:3000).
 | `DB_TYPE` | No | `sqlite` | Database type: `sqlite` or `postgresql` |
 | `DATABASE_URL` | When PostgreSQL | — | PostgreSQL connection string |
 | `SQLITE_PATH` | No | `./data/jade.db` | SQLite database file path |
-| `NEXT_PUBLIC_AUTH_ENABLED` | No | `false` | Enable Google OAuth (`true`) or use fingerprint mode (`false`) |
+| `AUTH_ENABLED` | No | `false` | Enable Google OAuth (`true`) or use fingerprint mode (`false`) |
 | `GOOGLE_CLIENT_ID` | When OAuth | — | Google OAuth client ID |
 | `GOOGLE_CLIENT_SECRET` | When OAuth | — | Google OAuth client secret |
-| `NEXT_PUBLIC_APP_NAME` | No | `JadeAI` | Application display name |
-| `NEXT_PUBLIC_APP_URL` | No | `http://localhost:3000` | Application URL |
-| `NEXT_PUBLIC_DEFAULT_LOCALE` | No | `zh` | Default language: `zh` or `en` |
+| `APP_NAME` | No | `JadeAI` | Application display name |
+| `DEFAULT_LOCALE` | No | `zh` | Default language: `zh` or `en` |
 
 ## Scripts
 
@@ -449,7 +448,7 @@ Yes. Set the `DB_TYPE` environment variable to `sqlite` or `postgresql`. SQLite 
 <details>
 <summary><b>How does authentication work without OAuth?</b></summary>
 
-When `NEXT_PUBLIC_AUTH_ENABLED=false` (default), JadeAI uses browser fingerprinting via FingerprintJS. A unique fingerprint ID is generated for each browser and used as the user identifier. No login screen is shown — users can start building resumes immediately.
+When `AUTH_ENABLED=false` (default), JadeAI uses browser fingerprinting via FingerprintJS. A unique fingerprint ID is generated for each browser and used as the user identifier. No login screen is shown — users can start building resumes immediately.
 
 </details>
 
