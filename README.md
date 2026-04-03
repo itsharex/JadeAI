@@ -27,7 +27,7 @@ Join our groups for discussion and support:
 
 Lark Group
 
-![lark-chat](images/lark-chat.png)
+![lark-chat](images/lark.png)
 
 ## Screenshots
 

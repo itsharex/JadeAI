@@ -27,7 +27,7 @@
 
 加入飞书群
 
-![lark-chat](images/lark-chat.png)
+![lark-chat](images/lark.png)
 
 
 ---
