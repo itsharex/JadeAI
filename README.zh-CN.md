@@ -24,9 +24,11 @@
 
 [![Linux.do](https://img.shields.io/badge/Linux.do-社区-blue)](https://linux.do/)
 
-| QQ 群 | 微信群 | 飞书群 |
-|:---:|:---:|:---:|
-| <img src="images/chat-group.jpg" width="200" alt="QQ交流群二维码" /> | <img src="images/wchat-group.jpg" width="200" alt="微信交流群二维码" /> | <img src="images/lark-chat.png" width="200" alt="飞书交流群二维码" /> |
+
+Lark Group
+
+<img src="images/lark-chat.png" width="200" alt="Lark Group QR Code" />
+
 
 ---
 
