@@ -47,8 +47,23 @@ export default function PreviewPage({ params }: { params: Promise<{ id: string }
           {isExporting ? t('pdf.exporting') : t('editor.toolbar.export')}
         </Button>
       </div>
-      <div className="p-8">
+      <div className="p-8 pb-20 sm:pb-8">
         <ResumePreview resume={resume} />
+      </div>
+      {/* Mobile bottom action bar */}
+      <div className="fixed inset-x-0 bottom-0 z-30 flex items-center gap-2 border-t bg-white p-3 dark:bg-background sm:hidden">
+        <Button variant="outline" className="flex-1 cursor-pointer" onClick={() => router.push(`/editor/${id}`)}>
+          <ArrowLeft className="mr-1.5 h-4 w-4" />
+          {t('common.back')}
+        </Button>
+        <Button
+          className="flex-1 cursor-pointer bg-pink-500 hover:bg-pink-600"
+          onClick={() => exportPdf(id, resume.title)}
+          disabled={isExporting}
+        >
+          <Download className="mr-1.5 h-4 w-4" />
+          {isExporting ? t('pdf.exporting') : t('editor.toolbar.export')}
+        </Button>
       </div>
     </div>
   );

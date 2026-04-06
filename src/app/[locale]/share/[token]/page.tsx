@@ -153,15 +153,15 @@ export default function SharePage({ params }: { params: Promise<{ token: string 
     return (
       <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950">
         {/* Top bar */}
-        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-200 bg-white px-4 py-3 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-pink-500">JadeAI</span>
-            <span className="text-xs text-zinc-400">|</span>
-            <span className="text-sm text-zinc-600 dark:text-zinc-400">{resume.title}</span>
+        <div className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-zinc-200 bg-white px-4 py-3 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="shrink-0 text-sm font-semibold text-pink-500">JadeAI</span>
+            <span className="shrink-0 text-xs text-zinc-400">|</span>
+            <span className="truncate text-sm text-zinc-600 dark:text-zinc-400">{resume.title}</span>
           </div>
           <Link
             href="/dashboard"
-            className="text-sm text-pink-500 hover:text-pink-600 font-medium"
+            className="shrink-0 text-sm font-medium text-pink-500 hover:text-pink-600"
           >
             {t('viewOnJadeAI')}
           </Link>
