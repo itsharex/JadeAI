@@ -109,6 +109,8 @@
     }
   },
   "editor": {
+    "edit": "Edit",
+    "preview": "Preview",
     "toolbar": {
       "undo": "Undo",
       "redo": "Redo",
@@ -131,6 +133,7 @@
       "import": "Import"
     },
     "aiPolish": "AI Polish",
+    "invalidSectionContent": "This section has invalid data. Please use AI to regenerate the content.",
     "sidebar": {
       "sections": "Sections",
       "addSection": "Add Section",

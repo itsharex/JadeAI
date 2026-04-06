@@ -109,6 +109,8 @@
     }
   },
   "editor": {
+    "edit": "编辑",
+    "preview": "预览",
     "toolbar": {
       "undo": "撤销",
       "redo": "重做",
@@ -131,6 +133,7 @@
       "import": "导入"
     },
     "aiPolish": "AI 润色",
+    "invalidSectionContent": "该模块数据异常，请使用 AI 重新生成内容",
     "sidebar": {
       "sections": "简历模块",
       "addSection": "添加模块",
