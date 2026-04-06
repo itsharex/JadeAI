@@ -13,6 +13,7 @@ interface EditorStore {
   undoStack: ResumeSnapshot[];
   redoStack: ResumeSnapshot[];
   pendingAiMessage: string | null;
+  mobileActiveTab: "edit" | "preview";
 
   selectSection: (id: string | null) => void;
   selectItem: (id: string | null) => void;
@@ -25,6 +26,7 @@ interface EditorStore {
   undo: () => ResumeSnapshot | null;
   redo: () => ResumeSnapshot | null;
   setPendingAiMessage: (message: string | null) => void;
+  setMobileActiveTab: (tab: "edit" | "preview") => void;
   reset: () => void;
 }
 
@@ -38,6 +40,7 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
   undoStack: [],
   redoStack: [],
   pendingAiMessage: null,
+  mobileActiveTab: "edit",
 
   selectSection: (id) => set({ selectedSectionId: id, selectedItemId: null }),
   selectItem: (id) => set({ selectedItemId: id }),
@@ -80,6 +83,7 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
   },
 
   setPendingAiMessage: (message) => set({ pendingAiMessage: message }),
+  setMobileActiveTab: (tab) => set({ mobileActiveTab: tab }),
 
   reset: () =>
     set({
@@ -92,5 +96,6 @@ export const useEditorStore = create<EditorStore>((set, get) => ({
       undoStack: [],
       redoStack: [],
       pendingAiMessage: null,
+      mobileActiveTab: "edit",
     }),
 }));
