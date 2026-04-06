@@ -26,7 +26,7 @@ export function ProgressBar({ onSwitchRound }: ProgressBarProps) {
             <div
               onClick={clickable ? () => onSwitchRound(i) : undefined}
               className={cn(
-                'flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-xs font-medium transition-all',
+                'flex items-center gap-1.5 rounded-full border-2 px-1 sm:px-3 py-1.5 text-xs font-medium transition-all',
                 isCurrent && 'border-pink-500 bg-gradient-to-r from-pink-50 to-white dark:from-pink-950 dark:to-zinc-900',
                 isDone && !isCurrent && 'border-green-300 bg-green-50 dark:border-green-700 dark:bg-green-950',
                 !isCurrent && !isDone && 'border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800',
@@ -50,7 +50,7 @@ export function ProgressBar({ onSwitchRound }: ProgressBarProps) {
                   !isCurrent && !isDone && 'text-zinc-400'
                 )}
               >
-                {config.name}
+                <span className="hidden sm:inline">{config.name}</span>
               </span>
             </div>
             {i < rounds.length - 1 && (
