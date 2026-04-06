@@ -23,14 +23,14 @@ export function ReportOverview({ report, session }: ReportOverviewProps) {
 
   return (
     <div className="rounded-xl border bg-white p-6 dark:bg-zinc-900">
-      <div className="mb-5 flex items-center gap-5">
+      <div className="mb-5 flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:gap-5">
         <div className={cn('flex h-20 w-20 flex-col items-center justify-center rounded-full border-[3px]', grade.border, grade.bg)}>
           <div className="text-3xl font-extrabold leading-none">{report.overallScore}</div>
           <div className={cn('mt-0.5 text-xs font-semibold', grade.color)}>
             {t(`grade.${grade.key}`)}
           </div>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 text-center sm:text-left">
           <h2 className="mb-1 text-xl font-bold">{session.jobTitle}</h2>
           <p className="text-sm text-zinc-500">
             {new Date(session.createdAt).toLocaleDateString()}

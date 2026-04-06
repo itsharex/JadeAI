@@ -22,14 +22,16 @@ export function InterviewReportView({ report, session }: InterviewReportViewProp
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Link href="/interview">
           <Button variant="ghost" size="sm">
             <ArrowLeft className="mr-1 h-4 w-4" />
             {t('backToLobby')}
           </Button>
         </Link>
-        <ExportButtons report={report} session={session} />
+        <div className="hidden sm:flex">
+          <ExportButtons report={report} session={session} />
+        </div>
       </div>
 
       <ReportOverview report={report} session={session} />
