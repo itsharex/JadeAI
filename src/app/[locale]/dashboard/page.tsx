@@ -149,7 +149,7 @@ export default function DashboardPage() {
             className="cursor-pointer gap-2"
           >
             <Camera className="h-4 w-4" />
-            {t('linkedinPhoto')}
+            <span className="hidden sm:inline">{t('linkedinPhoto')}</span>
           </Button>
           <Button
             data-tour="dash-ai-generate"
@@ -158,7 +158,7 @@ export default function DashboardPage() {
             className="cursor-pointer gap-2"
           >
             <Sparkles className="h-4 w-4" />
-            {t('aiGenerate')}
+            <span className="hidden sm:inline">{t('aiGenerate')}</span>
           </Button>
           <Button
             variant="outline"
@@ -166,7 +166,7 @@ export default function DashboardPage() {
             className="cursor-pointer gap-2"
           >
             <Upload className="h-4 w-4" />
-            {t('importJson')}
+            <span className="hidden sm:inline">{t('importJson')}</span>
           </Button>
           <Button
             data-tour="dash-create"
@@ -174,7 +174,7 @@ export default function DashboardPage() {
             className="cursor-pointer gap-2 bg-pink-500 hover:bg-pink-600"
           >
             <Plus className="h-4 w-4" />
-            {t('createResume')}
+            <span className="hidden sm:inline">{t('createResume')}</span>
           </Button>
         </div>
       </div>
