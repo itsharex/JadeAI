@@ -125,6 +125,19 @@ const PRESET_THEMES: PresetTheme[] = [
       sectionSpacing: 14,
     },
   },
+  {
+    id: 'boss',
+    colors: ['#0A1F44', '#00C897', '#F5FBFA', '#334155'],
+    config: {
+      primaryColor: '#0A1F44',
+      accentColor: '#00C897',
+      fontFamily: 'Inter',
+      fontSize: 'medium',
+      lineSpacing: 1.55,
+      margin: { top: 22, right: 22, bottom: 22, left: 22 },
+      sectionSpacing: 15,
+    },
+  },
 ];
 
 const DEFAULT_THEME: ThemeConfig = {
