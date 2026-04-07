@@ -6,6 +6,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/layout/theme-provider';
 import { RuntimeConfigProvider } from '@/components/providers/runtime-config-provider';
+import { BrandProvider } from '@/components/layout/brand-provider';
 
 export default async function LocaleLayout({
   children,
@@ -33,10 +34,12 @@ export default async function LocaleLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <TooltipProvider>
-            {children}
-            <Toaster />
-          </TooltipProvider>
+          <BrandProvider>
+            <TooltipProvider>
+              {children}
+              <Toaster />
+            </TooltipProvider>
+          </BrandProvider>
         </ThemeProvider>
       </NextIntlClientProvider>
     </RuntimeConfigProvider>

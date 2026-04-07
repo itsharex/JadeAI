@@ -22,6 +22,11 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var b=localStorage.getItem('jadeai-brand');if(b==='jade'){document.documentElement.setAttribute('data-brand','jade');}}catch(e){}})();`,
+          }}
+        />
         {children}
       </body>
     </html>
