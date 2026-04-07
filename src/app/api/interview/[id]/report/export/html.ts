@@ -1,4 +1,5 @@
 import type { RoundEvaluation, DimensionScore, ImprovementItem } from '@/types/interview';
+import { BRAND_COLORS } from '@/lib/brand-constants';
 
 function getGradeLabel(score: number): { zh: string; color: string } {
   if (score >= 90) return { zh: '优秀', color: '#16a34a' };
@@ -54,13 +55,13 @@ export function generateInterviewReportHtml(report: any, session: any): string {
   .dim-item { display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: #fafafa; border-radius: 5px; }
   .dim-name { flex: 1; font-size: 11px; white-space: nowrap; }
   .dim-bar-outer { width: 100px; height: 6px; background: #f4f4f5; border-radius: 3px; overflow: hidden; flex-shrink: 0; }
-  .dim-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #ec4899, #f472b6); }
-  .dim-score { font-size: 11px; font-weight: 700; color: #ec4899; width: 24px; text-align: right; flex-shrink: 0; }
+  .dim-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, ${BRAND_COLORS.brand}, ${BRAND_COLORS.brandMuted}); }
+  .dim-score { font-size: 11px; font-weight: 700; color: ${BRAND_COLORS.brand}; width: 24px; text-align: right; flex-shrink: 0; }
 
   .round { border: 1px solid #f4f4f5; border-radius: 6px; margin-bottom: 14px; overflow: hidden; break-inside: avoid; }
   .round-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #fafafa; }
   .round-name { font-weight: 600; font-size: 13px; }
-  .round-score { font-size: 16px; font-weight: 800; color: #ec4899; }
+  .round-score { font-size: 16px; font-weight: 800; color: ${BRAND_COLORS.brand}; }
   .round-feedback { padding: 10px 14px; font-size: 11px; color: #52525b; border-bottom: 1px solid #f4f4f5; }
   .question { padding: 10px 14px; border-bottom: 1px solid #f4f4f5; }
   .question:last-child { border-bottom: none; }
