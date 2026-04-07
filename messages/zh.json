@@ -287,8 +287,8 @@
   "brand": {
     "label": "主题色",
     "options": {
-      "boss": "BOSS 直聘",
-      "jade": "Jade 翡翠",
+      "mint": "薄荷",
+      "jade": "翡翠",
       "pink": "玫粉"
     }
   },
@@ -304,7 +304,7 @@
       "elegant": "优雅",
       "bold": "大胆",
       "creative": "创意",
-      "boss": "BOSS 直聘"
+      "mint": "薄荷"
     },
     "avatarStyle": "头像样式",
     "avatarCircle": "圆形",

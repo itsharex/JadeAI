@@ -1,17 +1,11 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { useBrand, type Brand } from './brand-provider';
+import { cn } from '@/lib/utils';
 
 const OPTIONS: { id: Brand; swatch: string }[] = [
-  { id: 'boss', swatch: '#00A77F' },
+  { id: 'mint', swatch: '#00A77F' },
   { id: 'jade', swatch: '#059669' },
   { id: 'pink', swatch: '#ec4899' },
 ];
@@ -21,28 +15,30 @@ export function BrandSwitcher() {
   const t = useTranslations('brand');
 
   return (
-    <div className="px-2 py-1.5">
-      <div className="mb-1.5 px-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-        {t('label')}
+    <div className="flex items-center justify-between gap-2 px-2 py-1.5">
+      <span className="text-xs text-muted-foreground">{t('label')}</span>
+      <div className="flex items-center gap-1">
+        {OPTIONS.map((opt) => {
+          const active = brand === opt.id;
+          return (
+            <button
+              key={opt.id}
+              type="button"
+              aria-label={t(`options.${opt.id}`)}
+              title={t(`options.${opt.id}`)}
+              onClick={() => setBrand(opt.id)}
+              className={cn(
+                'group relative h-5 w-5 cursor-pointer rounded-full transition-transform hover:scale-110',
+                active && 'ring-2 ring-offset-2 ring-offset-background'
+              )}
+              style={{
+                backgroundColor: opt.swatch,
+                ...(active ? ({ '--tw-ring-color': opt.swatch } as React.CSSProperties) : {}),
+              }}
+            />
+          );
+        })}
       </div>
-      <Select value={brand} onValueChange={(v) => setBrand(v as Brand)}>
-        <SelectTrigger className="h-8 w-full cursor-pointer text-xs">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {OPTIONS.map((opt) => (
-            <SelectItem key={opt.id} value={opt.id} className="cursor-pointer text-xs">
-              <span className="flex items-center gap-2">
-                <span
-                  className="h-3 w-3 shrink-0 rounded-full border border-black/10"
-                  style={{ backgroundColor: opt.swatch }}
-                />
-                <span>{t(`options.${opt.id}`)}</span>
-              </span>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
     </div>
   );
 }

@@ -126,7 +126,7 @@ const PRESET_THEMES: PresetTheme[] = [
     },
   },
   {
-    id: 'boss',
+    id: 'mint',
     colors: ['#0A1F44', '#00C897', '#F5FBFA', '#334155'],
     config: {
       primaryColor: '#0A1F44',

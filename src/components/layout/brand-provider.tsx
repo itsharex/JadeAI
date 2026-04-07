@@ -2,10 +2,17 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
-export type Brand = 'boss' | 'jade' | 'pink';
+export type Brand = 'mint' | 'jade' | 'pink';
 
 const STORAGE_KEY = 'jadeai-brand';
-const VALID_BRANDS: Brand[] = ['boss', 'jade', 'pink'];
+const VALID_BRANDS: Brand[] = ['mint', 'jade', 'pink'];
+
+// Migrate legacy 'boss' value (pre-rename) to 'mint'.
+function normalizeBrand(raw: string | null): Brand | null {
+  if (raw === 'boss') return 'mint';
+  if (raw && (VALID_BRANDS as string[]).includes(raw)) return raw as Brand;
+  return null;
+}
 
 interface BrandContextValue {
   brand: Brand;
@@ -16,7 +23,7 @@ const BrandContext = createContext<BrandContextValue | null>(null);
 
 function applyBrand(brand: Brand) {
   if (typeof document === 'undefined') return;
-  if (brand === 'boss') {
+  if (brand === 'mint') {
     document.documentElement.removeAttribute('data-brand');
   } else {
     document.documentElement.setAttribute('data-brand', brand);
@@ -24,15 +31,17 @@ function applyBrand(brand: Brand) {
 }
 
 export function BrandProvider({ children }: { children: ReactNode }) {
-  const [brand, setBrandState] = useState<Brand>('boss');
+  const [brand, setBrandState] = useState<Brand>('mint');
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    const stored = localStorage.getItem(STORAGE_KEY) as Brand | null;
-    if (stored && VALID_BRANDS.includes(stored)) {
+    const normalized = normalizeBrand(localStorage.getItem(STORAGE_KEY));
+    if (normalized) {
+      // Persist migration so legacy 'boss' is rewritten to 'mint'.
+      localStorage.setItem(STORAGE_KEY, normalized);
       // eslint-disable-next-line react-hooks/set-state-in-effect -- canonical SSR hydration from localStorage
-      setBrandState(stored);
-      applyBrand(stored);
+      setBrandState(normalized);
+      applyBrand(normalized);
     }
   }, []);
 
