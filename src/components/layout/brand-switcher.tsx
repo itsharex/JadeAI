@@ -28,8 +28,8 @@ export function BrandSwitcher() {
               title={t(`options.${opt.id}`)}
               onClick={() => setBrand(opt.id)}
               className={cn(
-                'group relative h-5 w-5 cursor-pointer rounded-full transition-transform hover:scale-110',
-                active && 'ring-2 ring-offset-2 ring-offset-background'
+                'group relative h-3 w-3 cursor-pointer rounded-full transition-transform hover:scale-125',
+                active && 'ring-1 ring-offset-1 ring-offset-background'
               )}
               style={{
                 backgroundColor: opt.swatch,
