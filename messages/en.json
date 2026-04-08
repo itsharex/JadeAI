@@ -284,6 +284,14 @@
       "restartTourDescription": "Restart the editor guided tour"
     }
   },
+  "brand": {
+    "label": "Theme",
+    "options": {
+      "mint": "Mint",
+      "blue": "Blue",
+      "pink": "Pink"
+    }
+  },
   "themeEditor": {
     "title": "Theme Editor",
     "reset": "Reset Theme",
@@ -295,7 +303,8 @@
       "minimal": "Minimal",
       "elegant": "Elegant",
       "bold": "Bold",
-      "creative": "Creative"
+      "creative": "Creative",
+      "mint": "Mint"
     },
     "avatarStyle": "Avatar Shape",
     "avatarCircle": "Circle",

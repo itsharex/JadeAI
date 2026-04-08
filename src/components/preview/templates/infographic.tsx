@@ -5,6 +5,7 @@ import { AvatarImage } from '../avatar-image';
 import { degreeField, isSectionEmpty, md } from '../utils';
 import { QrCodesPreview } from '../qr-codes-preview';
 
+// intentional: infographic template visual identity — rotating rainbow palette; #ec4899 (pink) is one of 6 intentional accent colors
 const COLORS = ['#3b82f6', '#ef4444', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899'];
 
 export function InfographicTemplate({ resume }: { resume: Resume }) {

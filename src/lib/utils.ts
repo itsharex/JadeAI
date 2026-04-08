@@ -1,5 +1,17 @@
 import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { extendTailwindMerge } from "tailwind-merge"
+
+// Register custom brand color tokens so tailwind-merge treats them as
+// members of the same conflict groups as built-in colors. Without this,
+// `cn("bg-primary", "bg-brand")` keeps both classes and Tailwind source
+// order (alphabetical) lets `bg-primary` win, defeating brand overrides.
+const twMerge = extendTailwindMerge({
+  extend: {
+    theme: {
+      color: ["brand", "brand-hover", "brand-muted", "brand-foreground", "brand-ring"],
+    },
+  },
+})
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
