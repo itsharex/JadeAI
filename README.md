@@ -25,10 +25,6 @@ Join our groups for discussion and support:
 [![Linux.do](https://img.shields.io/badge/Linux.do-Community-blue)](https://linux.do/)
 
 
-Lark Group
-
-![lark-chat](images/lark.png)
-
 ## Recent Updates
 
 ### v0.3.4 · Brand Color System & Theme Switching
